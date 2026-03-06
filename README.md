@@ -1,6 +1,6 @@
-# Math Word Problems — Single-Agent Hello World
+# Math Word Problems — Single-Agent Introduction
 
-## The canonical "hello world" for single-agent LLM systems
+## The canonical introduction to single-agent LLM systems
 
 An agent that can't do math. A calculator it can call. Word problems it has to solve.
 

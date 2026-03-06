@@ -5,7 +5,7 @@ build-backend = "setuptools.backends._legacy:_Backend"
 [project]
 name = "math-word-problems"
 version = "1.0.0"
-description = "The canonical hello world for single-agent LLM systems"
+description = "The canonical introduction to single-agent LLM systems"
 requires-python = ">=3.11"
 license = "MIT"
 dependencies = [

@@ -1,4 +1,4 @@
-"""Math Word Problems — Single-Agent Hello World."""
+"""Math Word Problems — Single-Agent Introduction."""
 
 from .tools import calculator, unit_converter, percentage_calculator, date_calculator
 from .problems import PROBLEMS, PROBLEM_BY_TEXT, Problem
