@@ -28,14 +28,25 @@ source .venv/bin/activate
 pip install -r requirements.txt
 export ANTHROPIC_API_KEY=your-key-here
 
-# Run a single problem
-python solver.py "I have 3 baskets with 12 apples each. I eat 7. How many are left?"
+# Solve a problem with the LLM agent
+python solver.py --llm "I have 3 baskets with 12 apples each. I eat 7. How many are left?"
 
-# Run the benchmark suite
+# Solve with step-by-step trace
+python solver.py --llm --verbose "I have 3 baskets with 12 apples each. I eat 7. How many are left?"
+
+# Use Phase 2 tools (unit converter, percentage calculator, date calculator)
+python solver.py --llm --phase 2 "A recipe calls for 2.5 cups of flour for 4 servings. How many grams for 8 servings?"
+
+# Use Phase 3 (detects unsolvable problems)
+python solver.py --llm --phase 3 "A car drives from A to B in 3 hours. How fast was it going?"
+
+# Run the predefined solver (no API key needed)
 python solver.py --benchmark
 
-# Run with step-by-step trace visible
-python solver.py --verbose "A shirt costs $25. It's 20% off. What's the sale price?"
+# Run LLM benchmarks
+python benchmarks.py --llm --phase 1
+python benchmarks.py --llm --phase 2
+python benchmarks.py --llm --phase 3
 ```
 
 ---
@@ -45,17 +56,16 @@ python solver.py --verbose "A shirt costs $25. It's 20% off. What's the sale pri
 ```
 Problem: I have 3 baskets with 12 apples each. I eat 7. How many are left?
 
-Step 1 — THINK: I need to find the total number of apples first.
-         Multiply 3 baskets × 12 apples.
-Step 2 — ACT:   calculator(multiply, 3, 12)
-Step 3 — OBSERVE: 36
-Step 4 — THINK: Now I subtract the 7 apples that were eaten.
-Step 5 — ACT:   calculator(subtract, 36, 7)
-Step 6 — OBSERVE: 29
+Step 1 -- THINK: I need to find the total number of apples first. Multiply 3 baskets by 12 apples.
+Step 2 -- ACT:   calculator({'operation': 'multiply', 'a': 3, 'b': 12})
+Step 3 -- OBSERVE: 36.0
+Step 4 -- THINK: Now I subtract the 7 apples that were eaten.
+Step 5 -- ACT:   calculator({'operation': 'subtract', 'a': 36, 'b': 7})
+Step 6 -- OBSERVE: 29.0
+Step 7 -- THINK: FINAL ANSWER: 29
 
-Answer: 29 apples
-Steps: 3 think, 2 tool calls
-Correct: ✓
+Answer: 29
+Correct: + (expected: 29.0)
 ```
 
 ---
@@ -64,7 +74,7 @@ Correct: ✓
 
 ### Phase 1 — One Tool, Clear Problems
 
-The agent has one tool: a basic calculator with four operations (add, subtract, multiply, divide). Problems have unambiguous answers and require 1-4 operations chained together.
+The agent has one tool: a basic calculator with four operations (add, subtract, multiply, divide). Problems have unambiguous answers and require 1-5 operations chained together.
 
 The agent cannot do math in its head. It must use the calculator for every arithmetic operation — even obvious ones. This constraint is enforced by the system prompt and validated by checking that every numeric result in the answer trace came from a tool call, not from the LLM's own output.
 
@@ -113,7 +123,7 @@ User (word problem)
   → Answer + full reasoning trace
 ```
 
-The agent is a single LangGraph node with a tool-calling loop. State tracks the conversation history, tool call results, and the agent's reasoning chain.
+The agent is a LangGraph state machine with two nodes — an `agent` node (calls Claude) and a `tool_node` (executes tool calls) — connected by a conditional edge that loops until the model stops requesting tools. State tracks the conversation history, tool call results, and the agent's reasoning chain.
 
 ```python
 {
@@ -123,14 +133,16 @@ The agent is a single LangGraph node with a tool-calling loop. State tracks the 
             "type": "think" | "act" | "observe",
             "content": str,            # reasoning text or tool result
             "tool": str | None,        # tool name if type == "act"
-            "args": dict | None        # tool arguments if type == "act"
+            "args": dict | None,       # tool arguments if type == "act"
+            "result": Any | None       # numeric result if type == "observe"
         }
     ],
     "answer": str | None,              # final answer
     "answer_numeric": float | None,    # extracted numeric answer for verification
     "status": "solving" | "solved" | "unsolvable",
     "tool_calls": int,
-    "tokens_used": int
+    "tokens_in": int,
+    "tokens_out": int
 }
 ```
 
@@ -228,50 +240,102 @@ def date_calculator(operation: str, date: str, days: int = 0) -> str:
 **Tier 5 — Five operations (10 problems)**
 "A road trip is 340 miles. You drive 65mph for 3 hours, stop for gas, then 55mph for the rest. How long is the second leg?"
 
-### Benchmark Output
+### Benchmark Results (Claude Haiku 4.5)
+
+#### Phase 1 — Calculator Only
 
 ```
-| Tier | Problems | Accuracy | Avg Steps | Avg Tool Calls | Avg Tokens | Avg Cost   |
-|------|----------|----------|-----------|----------------|------------|------------|
-| 1    | 10       | 10/10    | 3.2       | 1.0            | 180        | $0.0001    |
-| 2    | 10       | 10/10    | 5.1       | 2.0            | 310        | $0.0002    |
-| 3    | 10       | 9/10     | 7.4       | 3.1            | 480        | $0.0004    |
-| 4    | 10       | 8/10     | 9.8       | 4.2            | 620        | $0.0005    |
-| 5    | 10       | 7/10     | 12.1      | 5.5            | 810        | $0.0007    |
+| Tier | Problems | Correct | Accuracy | Avg Tool Calls | Avg Tokens In | Avg Tokens Out |
+|------|----------|---------|----------|----------------|---------------|----------------|
+| 1    | 10       | 10      |     100% |            1.0 |          1654 |            134 |
+| 2    | 10       | 10      |     100% |            2.0 |          2382 |            264 |
+| 3    | 10       | 10      |     100% |            3.0 |          2741 |            371 |
+| 4    | 10       | 10      |     100% |            3.7 |          4544 |            470 |
+| 5    | 10       | 10      |     100% |            5.1 |          6370 |            634 |
+| ALL  | 50       | 50      |     100% |                |               |                |
 ```
 
-The expected pattern: accuracy drops and cost rises as problem complexity increases. The interesting question is where it breaks — which is the tier where chaining tool calls becomes unreliable.
+Perfect accuracy across all tiers. Token usage scales linearly with problem complexity.
 
-### The Meta-Benchmark
-
-After the agent benchmark, run the same 50 problems through plain Python arithmetic. Report:
+#### Phase 2 — Multiple Tools
 
 ```
-| Method          | Accuracy | Time     | Cost    |
-|-----------------|----------|----------|---------|
-| Agent (Haiku)   | 44/50    | 23.4s    | $0.019  |
-| Python script   | 50/50    | 0.001s   | $0.00   |
+| Tier | Problems | Correct | Accuracy | Avg Tool Calls | Avg Tokens In | Avg Tokens Out |
+|------|----------|---------|----------|----------------|---------------|----------------|
+| 6    | 30       | 30      |     100% |            2.7 |          5402 |            381 |
 ```
 
-This is the math equivalent of Phase 1 vs. Phase 3 in 52 Card Pickup. The agent is slower, more expensive, and less accurate than a script that just does the math. The point isn't that agents are good at arithmetic. The point is that you now understand how agents work — and you know when not to use one.
+The agent correctly selects between calculator, unit converter, percentage calculator, and date calculator across all 30 problems.
+
+#### Phase 3 — Incomplete Information
+
+```
+Solvable problems:     20/20 (100%)
+Unsolvable problems:   10/10 correctly rejected (100%)
+Hallucination rate:    0/10 (0%)
+Overall:               30/30 (100%)
+```
+
+The agent correctly identified all 10 unsolvable problems with zero hallucinations, and solved all 20 solvable problems including those with distractor information.
+
+#### The Meta-Benchmark
+
+The predefined solver runs all 50 Phase 1 problems through scripted operation plans — no LLM needed:
+
+```
+| Method          | Accuracy | Time      | Cost    |
+|-----------------|----------|-----------|---------|
+| Agent (Haiku)   | 50/50    | 168.2s    | ~$0.02  |
+| Python script   | 50/50    | 0.001s    | $0.00   |
+```
+
+The agent gets the same answers but is 168,000x slower and costs money. The point isn't that agents are good at arithmetic. The point is that you now understand how agents work — and you know when not to use one.
 
 ---
 
 ## Project Structure
 
 ```
-solver.py              Core agent: LangGraph state machine, tool loop, answer extraction
+agent.py               LLM-powered solver: LangGraph state machine, Claude tool loop
+solver.py              Predefined solver, CLI entry point, benchmark runners
 tools.py               Calculator, unit converter, percentage, date tools
-problems.py            Problem sets for all tiers and phases
-benchmarks.py          Benchmark runner and reporting
-tests/                 Unit tests for tools and agent behavior
-prompts/               Tier 2 implementation prompts for each phase
-docs/
-  tutorial_phase_1.md  Tutorial: one tool, clear problems
-  tutorial_phase_2.md  Tutorial: multiple tools, ambiguous problems
-  tutorial_phase_3.md  Tutorial: incomplete information and failure
-  blog_post.md         "Math Word Problems: The Single-Agent Hello World"
+problems.py            110 problems across 3 phases and 8 tiers
+benchmarks.py          Benchmark CLI for predefined and LLM modes
+test_tools.py          Unit tests for all four tools
+test_solver.py         Unit tests for solver and problem set structure
+requirements.txt       Python dependencies
 ```
+
+### CLI Reference
+
+```
+solver.py [problem]       Solve a single problem (predefined plans)
+  --llm                   Use the LLM-powered agent (requires ANTHROPIC_API_KEY)
+  --phase {1,2,3}         Tool set and system prompt to use (default: 1)
+  --model MODEL           Claude model name (default: claude-haiku-4-5-20251001)
+  --verbose               Show step-by-step reasoning trace
+  --mock                  Use naive mock solver (adds first two numbers)
+  --benchmark             Run predefined Phase 1 benchmark
+  --tier {1,2,3,4,5}      Run a specific tier only
+  --meta                  Compare agent vs. Python baseline
+
+benchmarks.py             Run benchmarks
+  --llm                   Use LLM agent
+  --phase {1,2,3}         Phase to benchmark (with --llm)
+  --model MODEL           Claude model (with --llm)
+  --mock                  Use mock solver
+  --meta                  Agent vs. Python comparison
+```
+
+---
+
+## Running Tests
+
+```bash
+python -m pytest test_tools.py test_solver.py -v
+```
+
+40 tests covering all four tools, the predefined solver, mock mode, and problem set structure. No API key required.
 
 ---
 
@@ -293,10 +357,10 @@ Math Word Problems is Level 1 of a three-part curriculum for agentic coding:
 **Level 1 — Math Word Problems** (this project)
 You understand what an agent *is*. One agent, one tool, think-act-observe.
 
-**Level 2 — Maze Solver** *(coming soon)*
+**Level 2 — Maze Solver**
 You understand what an agent is *good at*. One agent, spatial reasoning, memory, backtracking. Benchmarked against A* and wall-following.
 
-**Level 3 — [52 Card Pickup](https://github.com/violethawk/Fifty-Two-Card-Pickup)**
+**Level 3 — 52 Card Pickup**
 You understand how agents *work together* — and when they shouldn't. Multiple agents, coordination, conflict resolution, scaling experiments.
 
 Nobody wants to do math homework. Nobody wants to solve a maze. Nobody wants to pick up 52 cards. That's why we build agents.
@@ -305,11 +369,13 @@ Nobody wants to do math homework. Nobody wants to solve a maze. Nobody wants to 
 
 ## Dependencies
 
-- langgraph — state machine and tool loop
-- anthropic — Claude Haiku for agent reasoning
-- pytest — unit tests
+- **langgraph** — state machine and tool-calling loop
+- **langchain-anthropic** — Claude model integration for LangChain
+- **langchain-core** — base message types and tool abstractions
+- **anthropic** — Anthropic API client
+- **pytest** — unit tests
 
-Python 3.11+ stdlib (argparse, json, datetime).
+Python 3.11+ required. All other imports are stdlib (`argparse`, `math`, `re`, `datetime`).
 
 ---
 
