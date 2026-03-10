@@ -724,7 +724,7 @@ PHASE3_PROBLEMS: List[Problem] = PHASE3_SOLVABLE + PHASE3_UNSOLVABLE
 
 
 # ---------------------------------------------------------------------------
-# Tier 9 — Ambiguous, Partially Solvable, and Clarification-Needed (10 problems)
+# Tier 9 — Advanced Reasoning Under Ambiguity (10 problems)
 # The agent must: solve what is solvable, state assumptions, handle competing
 # interpretations, resist irrelevant numbers, or request clarification.
 # Problems have a primary expected_answer and optional accepted_answers for
@@ -825,7 +825,116 @@ PHASE3_AMBIGUOUS: List[Problem] = [
     ),
 ]
 
-PHASE3_PROBLEMS: List[Problem] = PHASE3_SOLVABLE + PHASE3_UNSOLVABLE + PHASE3_AMBIGUOUS
+# ---------------------------------------------------------------------------
+# Tier 10 — Adversarial and Real-World Inputs (10 problems)
+# Messy phrasing, approximate language, redundant numbers, vague units,
+# multi-sentence clutter, and tool confusion.  The agent must extract the
+# real question from noisy, human-like input and still produce a correct
+# numeric answer.
+# ---------------------------------------------------------------------------
+
+PHASE3_ADVERSARIAL: List[Problem] = [
+    # --- Messy / informal phrasing ---
+    Problem(
+        problem=(
+            "ok so i bought like 4 boxes of granola bars, 12 in each, "
+            "gave 7 away, how many left"
+        ),
+        expected_answer=4 * 12 - 7,  # 41
+        tier=10,
+    ),
+    Problem(
+        problem=(
+            "so my friend owes me 45 bucks and he paid back 20 yesterday "
+            "and then today he gave me another 10... how much does he still owe"
+        ),
+        expected_answer=45 - 20 - 10,  # 15
+        tier=10,
+    ),
+
+    # --- Approximate language (agent should compute with stated numbers) ---
+    Problem(
+        problem=(
+            "I drove about 210 miles, my car gets roughly 30 miles per gallon, "
+            "gas was around $3.40 a gallon. About how much did I spend on gas?"
+        ),
+        expected_answer=(210 / 30) * 3.40,  # 23.8
+        tier=10,
+    ),
+    Problem(
+        problem=(
+            "There were approximately 1200 people at the concert. "
+            "About a third left early. Roughly how many stayed?"
+        ),
+        expected_answer=1200 - 1200 / 3,  # 800
+        tier=10,
+    ),
+
+    # --- Redundant numbers and multi-sentence clutter ---
+    Problem(
+        problem=(
+            "I went to the store at 3pm on a Tuesday. The store is at 425 Oak Street "
+            "and has been open since 1987. I bought 6 cans of soup at $2.50 each "
+            "and paid with a $20 bill. How much change did I get?"
+        ),
+        expected_answer=20 - 6 * 2.50,  # 5
+        tier=10,
+    ),
+    Problem(
+        problem=(
+            "My daughter is in 4th grade at Lincoln Elementary, school #37 in the district. "
+            "Her class has 28 kids. They need 3 folders each for a project. "
+            "Folders come in packs of 10. How many packs do they need?"
+        ),
+        expected_answer=9,  # ceil(28 * 3 / 10) = ceil(8.4) = 9
+        tier=10,
+    ),
+
+    # --- Tool confusion (needs calculator + unit conversion) ---
+    Problem(
+        problem=(
+            "A recipe uses 500 grams of flour for 8 servings. "
+            "I'm making 3 servings. How many grams of flour do I need?"
+        ),
+        expected_answer=500 * (3 / 8),  # 187.5
+        tier=10,
+    ),
+    Problem(
+        problem=(
+            "My car's tank holds 15 gallons and I filled it up at $3.80 per gallon. "
+            "My friend in Canada paid 1.60 dollars per liter for 55 liters. "
+            "How much more did my friend pay than me?"
+        ),
+        expected_answer=1.60 * 55 - 15 * 3.80,  # 88 - 57 = 31
+        tier=10,
+    ),
+
+    # --- Vague units + irrelevant context ---
+    Problem(
+        problem=(
+            "Last summer we drove from Denver (elevation 5280 ft) to a campsite. "
+            "The drive was 180 miles and took 3 hours. We used 6 gallons of gas. "
+            "What was our average speed in mph?"
+        ),
+        expected_answer=180 / 3,  # 60
+        tier=10,
+    ),
+
+    # --- Hybrid: messy phrasing + approximate language + multiple steps ---
+    Problem(
+        problem=(
+            "ok so the bill was like $86 and there were 4 of us. "
+            "we decided to tip 20 percent on the whole bill. "
+            "how much does each person owe including tip"
+        ),
+        expected_answer=(86 * 1.20) / 4,  # 25.8
+        tier=10,
+    ),
+]
+
+PHASE3_PROBLEMS: List[Problem] = (
+    PHASE3_SOLVABLE + PHASE3_UNSOLVABLE + PHASE3_AMBIGUOUS + PHASE3_ADVERSARIAL
+)
 
 
 # Combine all problems into a single list

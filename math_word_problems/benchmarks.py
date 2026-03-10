@@ -11,7 +11,8 @@ from typing import Any, Dict, List
 
 from .problems import (
     PHASE1_PROBLEMS, PHASE2_PROBLEMS, PHASE3_PROBLEMS,
-    PHASE3_SOLVABLE, PHASE3_UNSOLVABLE, PHASE3_AMBIGUOUS, Problem,
+    PHASE3_SOLVABLE, PHASE3_UNSOLVABLE, PHASE3_AMBIGUOUS,
+    PHASE3_ADVERSARIAL, Problem,
 )
 from .solver import solve_problem
 
@@ -174,6 +175,22 @@ def run_llm_benchmark(
                 )
         print(f"\nAmbiguous accuracy: {correct_ambiguous}/{len(PHASE3_AMBIGUOUS)}")
 
-        total = len(PHASE3_SOLVABLE) + len(PHASE3_UNSOLVABLE) + len(PHASE3_AMBIGUOUS)
-        overall = correct_solved + correct_rejected + correct_ambiguous
+        print("\n--- Adversarial / Real-World Inputs (Tier 10) ---")
+        correct_adversarial = 0
+        for prob in PHASE3_ADVERSARIAL:
+            state = solve_problem_llm(prob.problem, phase=3, model_name=model_name)
+            if state["status"] in ("solved", "correctly_rejected"):
+                correct_adversarial += 1
+            else:
+                print(
+                    f"  MISS: {prob.problem[:60]}... "
+                    f"(got {state['status']}, answer={state.get('answer_numeric')})"
+                )
+        print(f"\nAdversarial accuracy: {correct_adversarial}/{len(PHASE3_ADVERSARIAL)}")
+
+        total = (
+            len(PHASE3_SOLVABLE) + len(PHASE3_UNSOLVABLE)
+            + len(PHASE3_AMBIGUOUS) + len(PHASE3_ADVERSARIAL)
+        )
+        overall = correct_solved + correct_rejected + correct_ambiguous + correct_adversarial
         print(f"\nOverall Phase 3 score: {overall}/{total}")

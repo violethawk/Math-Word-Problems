@@ -353,7 +353,7 @@ Key skill: recognizing missing information instead of hallucinating an answer.
 
 ---
 
-### Tier 9 — Ambiguous, Partially Solvable, and Clarification-Needed (10 problems)
+### Tier 9 — Advanced Reasoning Under Ambiguity (10 problems)
 
 These problems bridge clean curriculum and real agent behavior. The agent must handle partial solvability, competing interpretations, irrelevant numbers, and ambiguous wording. Problems with multiple valid interpretations accept any reasonable answer.
 
@@ -388,3 +388,42 @@ Key skill: solving the solvable part and ignoring irrelevant missing information
 | 8 | In 2024, a company with 500 employees and $2 million in revenue bought 30 computers at $800 each. How much did the computers cost? | 24000 | Resist irrelevant numbers | Year, employees, and revenue are distractors |
 | 9 | Tom is 42 years old, 6 feet tall, and weighs 185 pounds. He drives 25 miles to work at 50 mph. How long is his commute in minutes? | 30 | Resist irrelevant numbers | Age, height, and weight are distractors |
 | 10 | A bakery sells 3 types of bread. Sourdough costs $6, rye costs $5, and wheat costs an unknown amount. A customer buys 2 sourdough and 1 rye. They also grab a coffee for $3. How much do the bread and coffee cost? | 20 | Hybrid: partial + distractors | Only known bread + coffee; wheat price is missing but not purchased |
+
+---
+
+### Tier 10 — Adversarial and Real-World Inputs (10 problems)
+
+These problems simulate real user input: informal phrasing, typos, approximate language, redundant numbers, multi-sentence clutter, and scenarios requiring non-obvious tool combinations. The agent must extract the actual math question from noisy human-like input.
+
+#### Worked Example
+
+```
+Problem:  "ok so i bought like 4 boxes of granola bars, 12 in each,
+           gave 7 away, how many left"
+Answer:   41
+
+Step 1 -- THINK:   Despite the informal phrasing, this is: 4 boxes × 12 bars − 7 given away.
+Step 2 -- ACT:     calculator({operation: "multiply", a: 4, b: 12})
+Step 3 -- OBSERVE: 48.0
+Step 4 -- THINK:   Now subtract the 7 given away.
+Step 5 -- ACT:     calculator({operation: "subtract", a: 48, b: 7})
+Step 6 -- OBSERVE: 41.0
+Step 7 -- THINK:   FINAL ANSWER: 41
+```
+
+Key skill: parsing real-world messy input into a clean computation.
+
+#### All Tier 10 Problems
+
+| # | Problem | Answer | Category | Notes |
+|---|---------|--------|----------|-------|
+| 1 | ok so i bought like 4 boxes of granola bars, 12 in each, gave 7 away, how many left | 41 | Messy phrasing | No punctuation, filler words |
+| 2 | so my friend owes me 45 bucks and he paid back 20 yesterday and then today he gave me another 10... how much does he still owe | 15 | Messy phrasing | Conversational, ellipsis |
+| 3 | I drove about 210 miles, my car gets roughly 30 miles per gallon, gas was around $3.40 a gallon. About how much did I spend on gas? | 23.8 | Approximate language | "about", "roughly", "around" are noise |
+| 4 | There were approximately 1200 people at the concert. About a third left early. Roughly how many stayed? | 800 | Approximate language | Hedging language, compute with stated numbers |
+| 5 | I went to the store at 3pm on a Tuesday. The store is at 425 Oak Street and has been open since 1987. I bought 6 cans of soup at $2.50 each and paid with a $20 bill. How much change did I get? | 5 | Redundant numbers + clutter | Time, address, year are all distractors |
+| 6 | My daughter is in 4th grade at Lincoln Elementary, school #37 in the district. Her class has 28 kids. They need 3 folders each for a project. Folders come in packs of 10. How many packs do they need? | 9 | Redundant numbers + clutter | Grade, school number are distractors; requires ceiling division |
+| 7 | A recipe uses 500 grams of flour for 8 servings. I'm making 3 servings. How many grams of flour do I need? | 187.5 | Tool confusion | Scaling calculation, might tempt unit converter |
+| 8 | My car's tank holds 15 gallons and I filled it up at $3.80 per gallon. My friend in Canada paid 1.60 dollars per liter for 55 liters. How much more did my friend pay than me? | 31 | Tool confusion | Two separate cost calculations, then comparison |
+| 9 | Last summer we drove from Denver (elevation 5280 ft) to a campsite. The drive was 180 miles and took 3 hours. We used 6 gallons of gas. What was our average speed in mph? | 60 | Vague units + clutter | Elevation and gas usage are distractors |
+| 10 | ok so the bill was like $86 and there were 4 of us. we decided to tip 20 percent on the whole bill. how much does each person owe including tip | 25.8 | Hybrid: messy + multi-step | Informal phrasing with percentage + division |
