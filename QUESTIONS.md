@@ -192,7 +192,7 @@ Operation plan: `multiply(12, 12) → 144`, then `multiply(144, 0.40) → 57.6`,
 | # | Problem | Answer |
 |---|---------|--------|
 | 1 | A bakery makes 12 dozen cookies. They sell 40% on Monday and 25% of the remainder on Tuesday. How many are left after Tuesday? | 64.8 |
-| 2 | A computer is discounted by 15%, then a coupon takes off $50, then a 8% sales tax is applied. The original price is $1000. What is the final price? | 853.2 |
+| 2 | A computer is discounted by 15%, then a coupon takes off $50, then a 8% sales tax is applied. The original price is $1000. What is the final price? | 864 |
 | 3 | A runner completes 10 km on Monday, 12 km on Tuesday, 8 km on Wednesday, and 3 km on Thursday. She then doubles the total distance and subtracts 5 km for rest days. What is her final training distance? | 61 |
 | 4 | A factory produces 100 widgets per day for 5 days, then 120 widgets per day for 3 days. They ship 400 widgets and then 100 widgets are returned. How many widgets remain? | 560 |
 | 5 | A bank account starts with $2000. You deposit $500, withdraw $300, earn 5% interest on the current balance, then pay a $50 fee. What is the final balance? | 2260 |
@@ -258,7 +258,7 @@ Tools used: calculator (scaling) + unit_converter (cups to grams)
 | 21 | You buy 3 items at $40 each with a 15% discount. Convert the total to euros at 0.92 euros per dollar. How many euros do you pay? | 93.84 | calculator + percentage + converter |
 | 22 | A 50 kg bag of rice costs $80. You need 110 lbs of rice. How much will it cost? | 79.88 | unit_converter + calculator |
 | 23 | A car travels 300 miles on 10 gallons of gas. Gas costs $3.50 per gallon. How many km can you drive per dollar spent? | 13.79 | unit_converter + calculator |
-| 24 | Your salary is $4500. You pay 22% in taxes and then convert the remainder to British pounds at 0.79 per dollar. How many pounds do you take home? | 2771.1 | percentage + calculator |
+| 24 | Your salary is $4500. You pay 22% in taxes and then convert the remainder to British pounds at 0.79 per dollar. How many pounds do you take home? | 2772.9 | percentage + calculator |
 | 25 | A pool holds 10000 gallons. You fill it at 5 gallons per minute. After 80% is full, you switch to 3 gallons per minute. How many total minutes to fill it? | 2266.67 | percentage + calculator |
 | 26 | A 5 km race charges $30 entry. If 200 runners sign up and 15% drop out, how much revenue is collected from those who actually run? | 5100 | percentage + calculator |
 | 27 | A farmer has 200 acres. He plants 60% with corn and 25% with wheat. How many acres are unplanted? | 30 | percentage + calculator |
