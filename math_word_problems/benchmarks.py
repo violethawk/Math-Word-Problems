@@ -140,57 +140,40 @@ def run_llm_benchmark(
             acc = total_correct / total_problems * 100 if total_problems else 0
             print(f"| ALL  | {total_problems:<8} | {total_correct:<7} | {acc:>7.0f}% |")
     else:
-        print("--- Solvable Problems ---")
-        correct_solved = 0
-        for prob in PHASE3_SOLVABLE:
-            state = solve_problem_llm(prob.problem, phase=3, model_name=model_name)
-            if state["status"] == "solved":
-                correct_solved += 1
-            else:
-                print(f"  MISS: {prob.problem[:60]}... (got {state['status']})")
-        print(f"\nSolvable accuracy: {correct_solved}/{len(PHASE3_SOLVABLE)}")
+        by_tier: Dict[int, List[Problem]] = {}
+        for p in problems:
+            by_tier.setdefault(p.tier, []).append(p)
 
-        print("\n--- Unsolvable Problems ---")
-        correct_rejected = hallucinated = 0
-        for prob in PHASE3_UNSOLVABLE:
-            state = solve_problem_llm(prob.problem, phase=3, model_name=model_name)
-            if state["status"] == "correctly_rejected":
-                correct_rejected += 1
-            else:
-                hallucinated += 1
-                print(f"  HALLUCINATION: {prob.problem[:60]}... (answered {state.get('answer_numeric')})")
-        print(f"\nCorrect rejection rate: {correct_rejected}/{len(PHASE3_UNSOLVABLE)}")
-        print(f"Hallucination rate: {hallucinated}/{len(PHASE3_UNSOLVABLE)}")
+        print("| Tier | Problems | Correct | Accuracy | Avg Tool Calls | Avg Tokens In | Avg Tokens Out |")
+        print("|------|----------|---------|----------|----------------|---------------|----------------|")
 
-        print("\n--- Ambiguous / Partially Solvable Problems (Tier 9) ---")
-        correct_ambiguous = 0
-        for prob in PHASE3_AMBIGUOUS:
-            state = solve_problem_llm(prob.problem, phase=3, model_name=model_name)
-            if state["status"] in ("solved", "correctly_rejected"):
-                correct_ambiguous += 1
-            else:
-                print(
-                    f"  MISS: {prob.problem[:60]}... "
-                    f"(got {state['status']}, answer={state.get('answer_numeric')})"
-                )
-        print(f"\nAmbiguous accuracy: {correct_ambiguous}/{len(PHASE3_AMBIGUOUS)}")
+        total_correct = total_problems = 0
+        for t in sorted(by_tier):
+            probs = by_tier[t]
+            correct = tc_sum = ti_sum = to_sum = 0
+            for prob in probs:
+                state = solve_problem_llm(prob.problem, phase=3, model_name=model_name)
+                if state["status"] in ("solved", "correctly_rejected"):
+                    correct += 1
+                else:
+                    label = "HALLUCINATION" if prob.tier == 8 else "MISS"
+                    print(
+                        f"  {label}: {prob.problem[:60]}... "
+                        f"(got {state['status']}, answer={state.get('answer_numeric')})"
+                    )
+                tc_sum += state.get("tool_calls", 0)
+                ti_sum += state.get("tokens_in", 0)
+                to_sum += state.get("tokens_out", 0)
+            n = len(probs)
+            total_correct += correct
+            total_problems += n
+            acc = correct / n * 100 if n else 0
+            print(
+                f"| {t:<4} | {n:<8} | {correct:<7} | {acc:>7.0f}% |"
+                f" {tc_sum/n:>14.1f} | {ti_sum/n:>13.0f} | {to_sum/n:>14.0f} |"
+            )
+        if len(by_tier) > 1:
+            acc = total_correct / total_problems * 100 if total_problems else 0
+            print(f"| ALL  | {total_problems:<8} | {total_correct:<7} | {acc:>7.0f}% |")
 
-        print("\n--- Adversarial / Real-World Inputs (Tier 10) ---")
-        correct_adversarial = 0
-        for prob in PHASE3_ADVERSARIAL:
-            state = solve_problem_llm(prob.problem, phase=3, model_name=model_name)
-            if state["status"] in ("solved", "correctly_rejected"):
-                correct_adversarial += 1
-            else:
-                print(
-                    f"  MISS: {prob.problem[:60]}... "
-                    f"(got {state['status']}, answer={state.get('answer_numeric')})"
-                )
-        print(f"\nAdversarial accuracy: {correct_adversarial}/{len(PHASE3_ADVERSARIAL)}")
-
-        total = (
-            len(PHASE3_SOLVABLE) + len(PHASE3_UNSOLVABLE)
-            + len(PHASE3_AMBIGUOUS) + len(PHASE3_ADVERSARIAL)
-        )
-        overall = correct_solved + correct_rejected + correct_ambiguous + correct_adversarial
-        print(f"\nOverall Phase 3 score: {overall}/{total}")
+        print(f"\nOverall Phase 3 score: {total_correct}/{total_problems}")

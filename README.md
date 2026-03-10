@@ -292,16 +292,16 @@ The agent correctly selects between calculator, unit converter, percentage calcu
 #### Phase 3 — Incomplete Information & Robustness
 
 ```
-| Tier | Category                    | Problems | Correct | Accuracy |
-|------|-----------------------------|----------|---------|----------|
-| 7    | Solvable (with distractors) | 20       | 20      |     100% |
-| 8    | Unsolvable (reject/detect)  | 10       | 10      |     100% |
-| 9    | Ambiguous / partial info    | 10       | 10      |     100% |
-| 10   | Adversarial / real-world    | 10       | 10      |     100% |
-| ALL  | —                           | 50       | 50      |     100% |
+| Tier | Problems | Correct | Accuracy | Avg Tool Calls | Avg Tokens In | Avg Tokens Out |
+|------|----------|---------|----------|----------------|---------------|----------------|
+| 7    | 20       | 20      |     100% |            2.3 |          4667 |            307 |
+| 8    | 10       | 10      |     100% |            0.0 |          1498 |            164 |
+| 9    | 10       | 10      |     100% |            1.9 |          4705 |            278 |
+| 10   | 10       | 10      |     100% |            2.3 |          4917 |            309 |
+| ALL  | 50       | 50      |     100% |                |               |                |
 ```
 
-Zero hallucinations on unsolvable problems. All ambiguous, partially-solvable, and messy real-world inputs handled correctly.
+Tier 8 (unsolvable) uses zero tool calls — the agent correctly rejects before computing. Zero hallucinations across all unsolvable problems. All ambiguous, partially-solvable, and messy real-world inputs handled correctly.
 
 #### Overall: 130/130 (100%)
 
