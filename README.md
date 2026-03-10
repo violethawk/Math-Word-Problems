@@ -292,15 +292,16 @@ The agent correctly selects between calculator, unit converter, percentage calcu
 #### Phase 3 — Incomplete Information & Robustness
 
 ```
-Solvable problems (Tier 7):          20/20 (100%)
-Unsolvable problems (Tier 8):        10/10 correctly rejected (100%)
-Hallucination rate:                   0/10 (0%)
-Ambiguous problems (Tier 9):         10/10 (100%)
-Adversarial / real-world (Tier 10):  10/10 (100%)
-Overall:                             50/50 (100%)
+| Tier | Category                    | Problems | Correct | Accuracy |
+|------|-----------------------------|----------|---------|----------|
+| 7    | Solvable (with distractors) | 20       | 20      |     100% |
+| 8    | Unsolvable (reject/detect)  | 10       | 10      |     100% |
+| 9    | Ambiguous / partial info    | 10       | 10      |     100% |
+| 10   | Adversarial / real-world    | 10       | 10      |     100% |
+| ALL  | —                           | 50       | 50      |     100% |
 ```
 
-The agent correctly identified all 10 unsolvable problems with zero hallucinations, solved all 20 solvable problems including those with distractor information, handled all ambiguous and partially-solvable problems, and parsed all messy real-world inputs correctly.
+Zero hallucinations on unsolvable problems. All ambiguous, partially-solvable, and messy real-world inputs handled correctly.
 
 #### Overall: 130/130 (100%)
 
