@@ -72,7 +72,7 @@ Correct: + (expected: 29.0)
 
 ## The Full Problem Set
 
-All 130 questions and answers are documented in **[QUESTIONS.md](QUESTIONS.md)** — every problem, its expected answer, and a fully worked example for each tier showing the complete think-act-observe trace.
+All 135 questions and answers are documented in **[QUESTIONS.md](QUESTIONS.md)** — every problem, its expected answer, and a fully worked example for each tier showing the complete think-act-observe trace.
 
 ---
 
@@ -128,7 +128,7 @@ Real human input: "ok so i bought like 4 boxes of granola bars, 12 in each, gave
 
 **Key concepts:** Partial solvability, assumption-stating, interpretation selection, noise tolerance, robustness.
 
-**Benchmark:** 20 problems across tiers 9-10. Measure: accuracy under ambiguity, correct handling of messy inputs.
+**Benchmark:** 25 problems across tiers 9-10. Measure: accuracy under ambiguity, correct handling of messy inputs.
 
 ---
 
@@ -267,24 +267,25 @@ def date_calculator(operation: str, date: str, days: int = 0) -> str:
 #### Phase 1 — Calculator Only
 
 ```
-| Tier | Problems | Correct | Accuracy | Avg Tool Calls | Avg Tokens In | Avg Tokens Out |
-|------|----------|---------|----------|----------------|---------------|----------------|
-| 1    | 10       | 10      |     100% |            1.0 |          1654 |            134 |
-| 2    | 10       | 10      |     100% |            2.0 |          2292 |            268 |
-| 3    | 10       | 10      |     100% |            3.0 |          2844 |            365 |
-| 4    | 10       | 10      |     100% |            3.6 |          4166 |            460 |
-| 5    | 10       | 10      |     100% |            5.1 |          6361 |            632 |
-| ALL  | 50       | 50      |     100% |                |               |                |
+| Tier | Problems | Correct | Accuracy | Avg Tool Calls | Avg Tokens In | Avg Tokens Out | Avg Cost |
+|------|----------|---------|----------|----------------|---------------|----------------|----------|
+| 1    | 10       | 10      |     100% |            1.0 |          1654 |            134 |  $0.0023 |
+| 2    | 10       | 10      |     100% |            2.0 |          2197 |            268 |  $0.0035 |
+| 3    | 10       | 10      |     100% |            3.0 |          2849 |            371 |  $0.0047 |
+| 4    | 10       | 10      |     100% |            3.7 |          4549 |            472 |  $0.0069 |
+| 5    | 10       | 10      |     100% |            5.1 |          6353 |            624 |  $0.0095 |
+| ALL  | 50       | 50      |     100% |                |               |                |  $0.2695 |
 ```
 
-Perfect accuracy across all tiers. Token usage scales linearly with problem complexity.
+Perfect accuracy across all tiers. Token usage and cost scale linearly with problem complexity.
 
 #### Phase 2 — Multiple Tools
 
 ```
-| Tier | Problems | Correct | Accuracy | Avg Tool Calls | Avg Tokens In | Avg Tokens Out |
-|------|----------|---------|----------|----------------|---------------|----------------|
-| 6    | 30       | 30      |     100% |            2.7 |          5280 |            375 |
+| Tier | Problems | Correct | Accuracy | Avg Tool Calls | Avg Tokens In | Avg Tokens Out | Avg Cost |
+|------|----------|---------|----------|----------------|---------------|----------------|----------|
+| 6    | 30       | 30      |     100% |            2.7 |          5222 |            376 |  $0.0071 |
+|      |          |         |          |                |               |       Total:   |  $0.2130 |
 ```
 
 The agent correctly selects between calculator, unit converter, percentage calculator, and date calculator across all 30 problems.
@@ -292,18 +293,18 @@ The agent correctly selects between calculator, unit converter, percentage calcu
 #### Phase 3 — Incomplete Information & Robustness
 
 ```
-| Tier | Problems | Correct | Accuracy | Avg Tool Calls | Avg Tokens In | Avg Tokens Out |
-|------|----------|---------|----------|----------------|---------------|----------------|
-| 7    | 20       | 20      |     100% |            2.3 |          4667 |            307 |
-| 8    | 10       | 10      |     100% |            0.0 |          1498 |            164 |
-| 9    | 10       | 10      |     100% |            1.9 |          4705 |            278 |
-| 10   | 10       | 10      |     100% |            2.3 |          4917 |            309 |
-| ALL  | 50       | 50      |     100% |                |               |                |
+| Tier | Problems | Correct | Accuracy | Avg Tool Calls | Avg Tokens In | Avg Tokens Out | Avg Cost |
+|------|----------|---------|----------|----------------|---------------|----------------|----------|
+| 7    | 20       | 20      |     100% |            2.3 |          4586 |            305 |  $0.0061 |
+| 8    | 10       | 10      |     100% |            0.0 |          1498 |            166 |  $0.0023 |
+| 9    | 10       | 10      |     100% |            1.9 |          4535 |            281 |  $0.0059 |
+| 10   | 15       | 15      |     100% |            2.9 |          5537 |            388 |  $0.0075 |
+| ALL  | 55       | 55      |     100% |                |               |                |  $0.3170 |
 ```
 
 Tier 8 (unsolvable) uses zero tool calls — the agent correctly rejects before computing. Zero hallucinations across all unsolvable problems. All ambiguous, partially-solvable, and messy real-world inputs handled correctly.
 
-#### Overall: 130/130 (100%)
+#### Overall: 135/135 (100%) — Total cost: $0.80
 
 #### The Meta-Benchmark
 
@@ -312,11 +313,11 @@ The LLM agent solves all 50 Phase 1 problems correctly — but so does a Python 
 ```
 | Method          | Accuracy | Time      | Cost    |
 |-----------------|----------|-----------|---------|
-| Agent (Haiku)   | 50/50    | ~320s     | ~$0.02  |
+| Agent (Haiku)   | 50/50    | ~170s     | $0.27   |
 | Python script   | 50/50    | <0.001s   | $0.00   |
 ```
 
-The agent gets the same answers but is ~300,000x slower and costs money. The point isn't that agents are good at arithmetic. The point is that you now understand how agents work — and you know when not to use one.
+The agent gets the same answers but is ~170,000x slower and costs money. The point isn't that agents are good at arithmetic. The point is that you now understand how agents work — and you know when not to use one.
 
 ---
 
@@ -329,7 +330,7 @@ math_word_problems/        Python package
   agent.py                 LLM-powered solver: LangGraph state machine, Claude tool loop
   benchmarks.py            Benchmark runners for predefined and LLM modes
   operations.py            Predefined operation plans for Phase 1 problems
-  problems.py              130 problems across 3 phases and 10 tiers
+  problems.py              135 problems across 3 phases and 10 tiers
   solver.py                Predefined solver and mock mode
   tools.py                 Calculator, unit converter, percentage, date tools
 tests/
@@ -374,23 +375,6 @@ python -m pytest tests/ -v
 5. **Knowing what you don't know** — how agents handle missing information (Phase 3)
 6. **Reasoning under ambiguity** — how agents handle partial information, competing interpretations, and messy inputs (Tiers 9-10)
 7. **When not to use an agent** — the meta-benchmark proves a Python script beats the agent on every dimension for this task
-
----
-
-## Where This Leads
-
-Math Word Problems is Level 1 of a three-part curriculum for agentic coding:
-
-**Level 1 — Math Word Problems** (this project)
-You understand what an agent *is*. One agent, one tool, think-act-observe.
-
-**Level 2 — Maze Solver**
-You understand what an agent is *good at*. One agent, spatial reasoning, memory, backtracking. Benchmarked against A* and wall-following.
-
-**Level 3 — 52 Card Pickup**
-You understand how agents *work together* — and when they shouldn't. Multiple agents, coordination, conflict resolution, scaling experiments.
-
-Nobody wants to do math homework. Nobody wants to solve a maze. Nobody wants to pick up 52 cards. That's why we build agents.
 
 ---
 

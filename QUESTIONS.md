@@ -1,12 +1,12 @@
 # Complete Question & Answer Set
 
-130 problems across 3 phases and 10 difficulty tiers. Every problem, its expected answer, and the operation plan (where applicable).
+135 problems across 3 phases and 10 difficulty tiers. Every problem, its expected answer, and the operation plan (where applicable).
 
 For each tier, one full worked example is shown first, followed by the remaining problems.
 
 ---
 
-## Phase 1 — Calculator Only (50 problems)
+## Phase 1 — Calculator Only
 
 The agent has one tool: a basic calculator (add, subtract, multiply, divide). Problems have unambiguous answers.
 
@@ -24,7 +24,7 @@ Step 3 -- OBSERVE: 130.0
 Step 4 -- THINK:   FINAL ANSWER: 130
 ```
 
-Operation plan: `add(47, 83) → 130`
+`add(47, 83) → 130`
 
 #### All Tier 1 Problems
 
@@ -33,7 +33,7 @@ Operation plan: `add(47, 83) → 130`
 | 1 | What is 47 plus 83? | 130 |
 | 2 | A book costs $15. You buy 3. How much total? | 45 |
 | 3 | You have 100 stickers and give away 37. How many left? | 63 |
-| 4 | A pizza is cut into 8 slices. 3 people split it equally. How many slices does each person get? | 2.667 |
+| 4 | A pizza is cut into 8 slices. 3 people split it equally. How many slices does each person get? | 2.67 |
 | 5 | I have 20 marbles and my friend gives me 15 more. How many marbles do I have? | 35 |
 | 6 | A car travels 60 miles in one hour. How far does it travel in 4 hours? | 240 |
 | 7 | You buy 5 bags of candy with 7 candies each. How many candies do you have? | 35 |
@@ -60,7 +60,7 @@ Step 6 -- OBSERVE: 29.0
 Step 7 -- THINK:   FINAL ANSWER: 29
 ```
 
-Operation plan: `multiply(3, 12) → 36`, then `subtract(36, 7) → 29`
+`multiply(3, 12) → 36`, then `subtract(36, 7) → 29`
 
 #### All Tier 2 Problems
 
@@ -99,7 +99,7 @@ Step 9 -- OBSERVE: 68.0
 Step 10 -- THINK:  FINAL ANSWER: 68
 ```
 
-Operation plan: `multiply(4, 15) → 60`, then `subtract(60, 12) → 48`, then `add(48, 20) → 68`
+`multiply(4, 15) → 60`, then `subtract(60, 12) → 48`, then `add(48, 20) → 68`
 
 #### All Tier 3 Problems
 
@@ -139,7 +139,7 @@ Step 9  -- OBSERVE: 1500.0
 Step 10 -- THINK:   FINAL ANSWER: 1500
 ```
 
-Operation plan: `multiply(3, 250) → 750`, then `divide(750, 2) → 375`, then `multiply(375, 4) → 1500`
+`multiply(3, 250) → 750`, then `divide(750, 2) → 375`, then `multiply(375, 4) → 1500`
 
 #### All Tier 4 Problems
 
@@ -185,7 +185,7 @@ Step 15 -- OBSERVE: 81.0
 Step 16 -- THINK:   FINAL ANSWER: 81
 ```
 
-Operation plan: `multiply(15, 12) → 180`, then `multiply(180, 0.40) → 72`, then `subtract(180, 72) → 108`, then `multiply(108, 0.25) → 27`, then `subtract(108, 27) → 81`
+`multiply(15, 12) → 180`, then `multiply(180, 0.40) → 72`, then `subtract(180, 72) → 108`, then `multiply(108, 0.25) → 27`, then `subtract(108, 27) → 81`
 
 #### All Tier 5 Problems
 
@@ -196,15 +196,15 @@ Operation plan: `multiply(15, 12) → 180`, then `multiply(180, 0.40) → 72`, t
 | 3 | A runner completes 10 km on Monday, 12 km on Tuesday, 8 km on Wednesday, and 3 km on Thursday. She then doubles the total distance and subtracts 5 km for rest days. What is her final training distance? | 61 |
 | 4 | A factory produces 100 widgets per day for 5 days, then 120 widgets per day for 3 days. They ship 400 widgets and then 100 widgets are returned. How many widgets remain? | 560 |
 | 5 | A bank account starts with $2000. You deposit $500, withdraw $300, earn 5% interest on the current balance, then pay a $50 fee. What is the final balance? | 2260 |
-| 6 | A car travels 50 mph for 2 hours, then 60 mph for 1 hour, takes a 0.5-hour break, then travels 55 mph for 1.5 hours. What is the total distance traveled? | 242.5 |
-| 7 | A 1000-liter tank is empty. Water flows in at 50 liters/min for 10 minutes, out at 30 liters/min for 5 minutes, then in at 40 liters/min for 5 minutes. Afterwards, half is pumped out. How much water remains? | 275 |
-| 8 | A construction project requires 1000 bricks. Workers lay 200 bricks/day for 3 days, then 150 bricks/day for 2 days, and then remove 50 damaged bricks. How many bricks remain to be laid? | 150 |
-| 9 | A travel itinerary: flight 3.5 hours, train 2.75 hours, layover 1.25 hours, car 4.5 hours, boat 1 hour. There is a 30-minute break during the car drive. What is the total travel time? | 12.5 |
-| 10 | A class buys 20 boxes of pencils (12 each). They distribute 180, lose 15, then buy 5 more boxes. How many pencils do they have now? | 105 |
+| 6 | A car travels 50 miles per hour for 2 hours, then 60 miles per hour for 1 hour, takes a 0.5‑hour break (no travel), then travels 55 miles per hour for 1.5 hours. What is the total distance traveled? | 242.5 |
+| 7 | A 1000‑liter tank is empty. Water flows in at 50 liters/min for 10 minutes, out at 30 liters/min for 5 minutes, then in at 40 liters/min for 5 minutes. Afterwards, half of the water is pumped out. How much water remains? | 275 |
+| 8 | A construction project requires 1000 bricks. Workers lay 200 bricks per day for 3 days, then 150 bricks per day for 2 days, and then remove 50 damaged bricks. How many bricks remain to be laid? | 150 |
+| 9 | A travel itinerary includes a flight of 3.5 hours, a train ride of 2.75 hours, a layover of 1.25 hours, a car drive of 4.5 hours, and a boat ride of 1 hour. There is a 30‑minute break during the car drive. What is the total travel time? | 12.5 |
+| 10 | A class buys 20 boxes of pencils. Each box has 12 pencils. They distribute 180 pencils among students, lose 15 pencils, and then buy 5 more boxes. How many pencils do they have now? | 105 |
 
 ---
 
-## Phase 2 — Multiple Tools (30 problems)
+## Phase 2 — Multiple Tools
 
 The agent chooses between four tools: calculator, unit_converter, percentage_calculator, and date_calculator. Problems don't specify which tool to use.
 
@@ -233,44 +233,44 @@ Tools used: calculator (scaling) + unit_converter (cups to grams)
 
 #### All Tier 6 Problems
 
-| # | Problem | Answer | Tools Needed |
-|---|---------|--------|--------------|
-| 1 | A shirt costs $80 and is 25% off. What is the sale price? | 60 | percentage |
-| 2 | A laptop costs $1200. There's a 10% discount, then you pay 8% sales tax on the discounted price. What do you pay? | 1166.4 | percentage + calculator |
-| 3 | You earn $3000 per month. You save 15% of your salary. After 4 months, how much have you saved? | 1800 | percentage + calculator |
-| 4 | A restaurant bill is $85. You want to leave a 20% tip. What is the total amount you pay? | 102 | percentage |
-| 5 | A store marks up products by 40%. If a product costs $50 to make, what is the selling price? | 70 | percentage |
-| 6 | A recipe calls for 2.5 cups of flour for 4 servings. You're making 8 servings. How many grams of flour do you need? | 600 | calculator + unit_converter |
-| 7 | You drive 120 miles. Your friend drives 150 km. Who drove farther, and by how many miles? | 26.82 | unit_converter + calculator |
-| 8 | A package weighs 5 lbs. You need to ship 3 of them. What is the total weight in kilograms? | 6.8 | calculator + unit_converter |
-| 9 | A room is 15 feet long and 12 feet wide. What is the area in square feet? | 180 | calculator |
-| 10 | You run a 10 km race in 50 minutes. What was your pace in minutes per mile? | 8.05 | unit_converter + calculator |
-| 11 | A town has 25000 people. The population grew by 12% last year. Then 500 people moved away. What is the current population? | 27500 | percentage + calculator |
-| 12 | You invest $5000 and earn 7% return. You then withdraw $200. How much remains? | 5150 | percentage + calculator |
-| 13 | A class of 40 students took a test. 85% passed. Of those who passed, 6 got an A. How many who passed did not get an A? | 28 | percentage + calculator |
-| 14 | A factory produces 2000 units. 3% are defective. Each defective unit costs $25 to fix. What is the total repair cost? | 1500 | percentage + calculator |
-| 15 | A house was bought for $250000 and appreciated by 8%. What is it worth now in thousands of dollars? | 270 | percentage + calculator |
-| 16 | A European car gets 15 km per liter. Fuel costs $1.20 per liter. You drive 100 miles. How much do you spend on fuel? | 12.87 | unit_converter + calculator |
-| 17 | You weigh 180 lbs and want to lose 10% of your body weight. How many kilograms do you need to lose? | 8.16 | percentage + unit_converter |
-| 18 | A recipe for 6 people uses 500 grams of sugar. You're cooking for 9 people. How many cups of sugar do you need? | 3.75 | calculator + unit_converter |
-| 19 | You start a project on 2025-03-01 and it takes 45 days. Then you have a 10-day review. How many total days from start to review end? | 55 | calculator + date_calculator |
-| 20 | An event is 120 days away. You need 90 days to prepare. How many days do you have before you must start preparing? | 30 | calculator |
-| 21 | You buy 3 items at $40 each with a 15% discount. Convert the total to euros at 0.92 euros per dollar. How many euros do you pay? | 93.84 | calculator + percentage + converter |
-| 22 | A 50 kg bag of rice costs $80. You need 110 lbs of rice. How much will it cost? | 79.88 | unit_converter + calculator |
-| 23 | A car travels 300 miles on 10 gallons of gas. Gas costs $3.50 per gallon. How many km can you drive per dollar spent? | 13.79 | unit_converter + calculator |
-| 24 | Your salary is $4500. You pay 22% in taxes and then convert the remainder to British pounds at 0.79 per dollar. How many pounds do you take home? | 2772.9 | percentage + calculator |
-| 25 | A pool holds 10000 gallons. You fill it at 5 gallons per minute. After 80% is full, you switch to 3 gallons per minute. How many total minutes to fill it? | 2266.67 | percentage + calculator |
-| 26 | A 5 km race charges $30 entry. If 200 runners sign up and 15% drop out, how much revenue is collected from those who actually run? | 5100 | percentage + calculator |
-| 27 | A farmer has 200 acres. He plants 60% with corn and 25% with wheat. How many acres are unplanted? | 30 | percentage + calculator |
-| 28 | You mix 2 lbs of coffee at $12/lb with 3 lbs at $8/lb. What is the average price per kilogram of the blend? | 21.16 | calculator + unit_converter |
-| 29 | A marathon is 26.2 miles. You ran 30 km. What percentage of a marathon have you completed? | 71.17 | unit_converter + calculator |
-| 30 | A tank holds 500 liters. It's 40% full. You add 50 gallons of water (1 gallon = 3.785 liters). How many liters are in the tank now? | 389.25 | percentage + unit_converter + calculator |
+| # | Problem | Answer |
+|---|---------|--------|
+| 1 | A shirt costs $80 and is 25% off. What is the sale price? | 60 |
+| 2 | A laptop costs $1200. There's a 10% discount, then you pay 8% sales tax on the discounted price. What do you pay? | 1166.4 |
+| 3 | You earn $3000 per month. You save 15% of your salary. After 4 months, how much have you saved? | 1800 |
+| 4 | A restaurant bill is $85. You want to leave a 20% tip. What is the total amount you pay? | 102 |
+| 5 | A store marks up products by 40%. If a product costs $50 to make, what is the selling price? | 70 |
+| 6 | A recipe calls for 2.5 cups of flour for 4 servings. You're making 8 servings. How many grams of flour do you need? | 600 |
+| 7 | You drive 120 miles. Your friend drives 150 km. Who drove farther, and by how many miles? | 26.79 |
+| 8 | A package weighs 5 lbs. You need to ship 3 of them. What is the total weight in kilograms? | 6.8 |
+| 9 | A room is 15 feet long and 12 feet wide. What is the area in square feet? | 180 |
+| 10 | You run a 10 km race in 50 minutes. What was your pace in minutes per mile? | 8.05 |
+| 11 | A town has 25000 people. The population grew by 12% last year. Then 500 people moved away. What is the current population? | 27500 |
+| 12 | You invest $5000 and earn 7% return. You then withdraw $200. How much remains? | 5150 |
+| 13 | A class of 40 students took a test. 85% passed. Of those who passed, 6 got an A. How many who passed did not get an A? | 28 |
+| 14 | A factory produces 2000 units. 3% are defective. Each defective unit costs $25 to fix. What is the total repair cost? | 1500 |
+| 15 | A house was bought for $250000 and appreciated by 8%. What is it worth now in thousands of dollars? | 270 |
+| 16 | A European car gets 15 km per liter. Fuel costs $1.20 per liter. You drive 100 miles. How much do you spend on fuel? | 12.87 |
+| 17 | You weigh 180 lbs and want to lose 10% of your body weight. How many kilograms do you need to lose? | 8.16 |
+| 18 | A recipe for 6 people uses 500 grams of sugar. You're cooking for 9 people. How many cups of sugar do you need? | 3.75 |
+| 19 | You start a project on 2025-03-01 and it takes 45 days. Then you have a 10-day review. How many total days from start to review end? | 55 |
+| 20 | An event is 120 days away. You need 90 days to prepare. How many days do you have before you must start preparing? | 30 |
+| 21 | You buy 3 items at $40 each with a 15% discount. Convert the total to euros at 0.92 euros per dollar. How many euros do you pay? | 93.84 |
+| 22 | A 50 kg bag of rice costs $80. You need 110 lbs of rice. How much will it cost? | 79.83 |
+| 23 | A car travels 300 miles on 10 gallons of gas. Gas costs $3.50 per gallon. How many km can you drive per dollar spent? | 13.79 |
+| 24 | Your salary is $4500. You pay 22% in taxes and then convert the remainder to British pounds at 0.79 per dollar. How many pounds do you take home? | 2772.9 |
+| 25 | A pool holds 10000 gallons. You fill it at 5 gallons per minute. After 80% is full, you switch to 3 gallons per minute. How many total minutes to fill it? | 2266.67 |
+| 26 | A 5 km race charges $30 entry. If 200 runners sign up and 15% drop out, how much revenue is collected from those who actually run? | 5100 |
+| 27 | A farmer has 200 acres. He plants 60% with corn and 25% with wheat. How many acres are unplanted? | 30 |
+| 28 | You mix 2 lbs of coffee at $12/lb with 3 lbs at $8/lb. What is the average price per kilogram of the blend? | 21.16 |
+| 29 | A marathon is 26.2 miles. You ran 30 km. What percentage of a marathon have you completed? | 71.15 |
+| 30 | A tank holds 500 liters. It's 40% full. You add 50 gallons of water (1 gallon = 3.785 liters). How many liters are in the tank now? | 389.25 |
 
 ---
 
-## Phase 3 — Incomplete Information (30 problems)
+## Phase 3 — Incomplete Information
 
-The agent must recognize unsolvable problems and reject them rather than hallucinate. 20 solvable problems are mixed with 10 unsolvable ones.
+The agent must recognize unsolvable problems and reject them rather than hallucinate. Solvable problems are mixed with unsolvable ones, ambiguous problems, and messy real-world inputs.
 
 ### Tier 7 — Solvable (with distractors and tricks)
 
@@ -292,28 +292,28 @@ Key skill: filtering irrelevant information.
 
 #### All Tier 7 Problems
 
-| # | Problem | Answer | Notes |
-|---|---------|--------|-------|
-| 1 | A train travels at 80 mph for 3 hours. How far does it go? | 240 | Straightforward |
-| 2 | You buy 4 notebooks at $3 each and 2 pens at $1.50 each. The store gives you a $2 discount. How much do you pay? | 13 | Multi-step |
-| 3 | A garden is 10m by 8m. You plant flowers in a 3m by 3m section. How much area is left unplanted? | 71 | Area subtraction |
-| 4 | There are 5 red balls, 3 blue balls, and 7 green balls. You remove all the blue balls. How many remain? | 12 | Ignore blue count |
-| 5 | A movie is 2 hours and 15 minutes long. You've watched 45 minutes. How many minutes are left? | 90 | Unit conversion |
-| 6 | A baker makes 5 dozen muffins and sells them for $2 each. She gives 10 away for free. How much revenue? | 100 | Subtract before multiply |
-| 7 | You have $500. You buy a jacket for $120 and shoes for $80. Your friend pays you back $50. How much do you have? | 350 | Chain of operations |
-| 8 | A parking lot has 200 spaces. 60% are occupied in the morning. By noon, 30 more cars arrive. How many spaces are still empty? | 50 | Percentage + arithmetic |
-| 9 | A pool is 50 meters long. A swimmer does 12 laps (one lap = one length). How many meters did she swim? | 600 | Interpret "lap" |
-| 10 | A teacher has 120 worksheets. She gives 4 worksheets to each of her 28 students. How many are left over? | 8 | Multiply then subtract |
-| 11 | John is 35 years old and weighs 180 lbs. He buys 6 apples at $0.75 each. How much does he spend? | 4.5 | Distractor info |
-| 12 | A blue car has 4 doors. A red car has 2 doors. There are also 3 motorcycles. How many doors on the cars? | 6 | Ignore motorcycles |
-| 13 | Sarah has 3 cats, 2 dogs, and a goldfish. Each cat eats 200g/day, each dog 400g. How much food per day? | 1400 | Ignore goldfish |
-| 14 | A room is 15ft long, 12ft wide, 9ft tall. Paint costs $25/gallon covering 350 sq ft. You only paint the floor. How many square feet? | 180 | Ignore height and paint |
-| 15 | 52 cards in a deck. Remove the 4 aces and 4 kings. Remaining cards weigh 1.5g each. How many cards remain? | 44 | Ignore weight |
-| 16 | You have 3 quarters, 2 dimes, and 5 nickels. How much money in cents? | 120 | Coin values |
-| 17 | A snail climbs 3 feet by day, slips back 1 foot at night. After 5 full day-night cycles, how many feet gained? | 10 | Pattern reasoning |
-| 18 | Two ropes: 8m and 5m. Cut 2m off the longer one and discard it, then tie them together. Total length? | 11 | Read carefully |
-| 19 | A clock strikes every hour. How many times does it strike between 1:00 PM and 5:00 PM inclusive? | 15 | Sum 1+2+3+4+5 |
-| 20 | Three friends split a $90 dinner bill equally, then each leaves a $5 tip. How much does each person pay? | 35 | Per-person calculation |
+| # | Problem | Answer |
+|---|---------|--------|
+| 1 | A train travels at 80 mph for 3 hours. How far does it go? | 240 |
+| 2 | You buy 4 notebooks at $3 each and 2 pens at $1.50 each. The store gives you a $2 discount. How much do you pay? | 13 |
+| 3 | A garden is 10m by 8m. You plant flowers in a 3m by 3m section. How much area is left unplanted? | 71 |
+| 4 | There are 5 red balls, 3 blue balls, and 7 green balls in a bag. You remove all the blue balls. How many balls remain? | 12 |
+| 5 | A movie is 2 hours and 15 minutes long. You've watched 45 minutes. How many minutes are left? | 90 |
+| 6 | A baker makes 5 dozen muffins and sells them for $2 each. She gives 10 away for free. How much revenue does she earn? | 100 |
+| 7 | You have $500. You buy a jacket for $120 and shoes for $80. Your friend owes you $50 and pays you back. How much do you have? | 350 |
+| 8 | A parking lot has 200 spaces. 60% are occupied in the morning. By noon, 30 more cars arrive. How many spaces are still empty? | 50 |
+| 9 | A pool is 50 meters long. A swimmer does 12 laps (one lap = one length). How many meters did she swim? | 600 |
+| 10 | A teacher has 120 worksheets. She gives 4 worksheets to each of her 28 students. How many worksheets are left over? | 8 |
+| 11 | John is 35 years old and weighs 180 lbs. He buys 6 apples at $0.75 each. How much does he spend? | 4.5 |
+| 12 | A blue car and a red car are in a parking lot. The blue car has 4 doors. The red car has 2 doors. There are also 3 motorcycles. How many doors are there on the cars? | 6 |
+| 13 | Sarah has 3 cats, 2 dogs, and a goldfish. Each cat eats 200g of food per day and each dog eats 400g. How much food do the cats and dogs eat per day in grams? | 1400 |
+| 14 | A rectangular room is 15 feet long, 12 feet wide, and 9 feet tall. Paint costs $25 per gallon and covers 350 square feet. You only need to paint the floor. How many square feet is the floor? | 180 |
+| 15 | There are 52 cards in a deck. You remove the 4 aces and 4 kings. The remaining cards weigh 1.5 grams each. How many cards remain? | 44 |
+| 16 | If you have 3 quarters, 2 dimes, and 5 nickels, how much money do you have in cents? | 120 |
+| 17 | A snail climbs 3 feet during the day but slips back 1 foot at night. After 5 full day-night cycles, how many feet has it gained? | 10 |
+| 18 | You have two ropes. One is 8 meters long and the other is 5 meters long. You cut 2 meters off the longer rope and discard it, then tie the two ropes together. What is the total length? | 11 |
+| 19 | A clock strikes every hour. How many times does it strike between 1:00 PM and 5:00 PM inclusive? | 15 |
+| 20 | Three friends split a $90 dinner bill equally, then each leaves a $5 tip. How much does each person pay in total? | 35 |
 
 ---
 
@@ -353,9 +353,7 @@ Key skill: recognizing missing information instead of hallucinating an answer.
 
 ---
 
-### Tier 9 — Advanced Reasoning Under Ambiguity (10 problems)
-
-These problems bridge clean curriculum and real agent behavior. The agent must handle partial solvability, competing interpretations, irrelevant numbers, and ambiguous wording. Problems with multiple valid interpretations accept any reasonable answer.
+### Tier 9 — Advanced Reasoning Under Ambiguity
 
 #### Worked Example
 
@@ -376,24 +374,22 @@ Key skill: solving the solvable part and ignoring irrelevant missing information
 
 #### All Tier 9 Problems
 
-| # | Problem | Answer | Category | Notes |
-|---|---------|--------|----------|-------|
-| 1 | A train leaves Chicago at 60 mph. Another train leaves New York at an unknown speed. How far has the Chicago train traveled after 3 hours? | 180 | Partial solvability | Ignore the unsolvable part |
-| 2 | A store sells notebooks for $4 each and pens for an unknown price. You buy 5 notebooks and 3 pens. How much do the notebooks cost? | 20 | Partial solvability | Answer what you can |
-| 3 | A rectangular room is 12 feet long. The width is unknown. A hallway connected to the room is 8 feet long and 4 feet wide. What is the area of the hallway? | 32 | Partial solvability | Room dimensions are a distractor |
-| 4 | A worker earns $20 per hour and worked from 9 AM to 5 PM with a 1-hour lunch break. How much did they earn? | 140 | Clarification needed | 8 hours − 1 break = 7 hours × $20 |
-| 5 | A store advertises "50% off, then take an additional 20% off." A jacket originally costs $200. What is the final price? | 80 or 60 | Competing interpretations | Sequential (80) vs combined (60) |
-| 6 | A swimmer does 20 laps in a 25-meter pool. How far did they swim? | 500 or 1000 | Competing interpretations | Lap = one length (500) or out-and-back (1000) |
-| 7 | A fence surrounds a yard that is 30 feet by 40 feet. There is a 4-foot gate. How many feet of fencing are needed? | 136 or 140 | Competing interpretations | Subtract gate (136) or not (140) |
-| 8 | In 2024, a company with 500 employees and $2 million in revenue bought 30 computers at $800 each. How much did the computers cost? | 24000 | Resist irrelevant numbers | Year, employees, and revenue are distractors |
-| 9 | Tom is 42 years old, 6 feet tall, and weighs 185 pounds. He drives 25 miles to work at 50 mph. How long is his commute in minutes? | 30 | Resist irrelevant numbers | Age, height, and weight are distractors |
-| 10 | A bakery sells 3 types of bread. Sourdough costs $6, rye costs $5, and wheat costs an unknown amount. A customer buys 2 sourdough and 1 rye. They also grab a coffee for $3. How much do the bread and coffee cost? | 20 | Hybrid: partial + distractors | Only known bread + coffee; wheat price is missing but not purchased |
+| # | Problem | Answer |
+|---|---------|--------|
+| 1 | A train leaves Chicago at 60 mph. Another train leaves New York at an unknown speed. How far has the Chicago train traveled after 3 hours? | 180 |
+| 2 | A store sells notebooks for $4 each and pens for an unknown price. You buy 5 notebooks and 3 pens. How much do the notebooks cost? | 20 |
+| 3 | A rectangular room is 12 feet long. The width is unknown. A hallway connected to the room is 8 feet long and 4 feet wide. What is the area of the hallway? | 32 |
+| 4 | A worker earns $20 per hour and worked from 9 AM to 5 PM with a 1-hour lunch break. How much did they earn? | 140 |
+| 5 | A store advertises '50% off, then take an additional 20% off.' A jacket originally costs $200. What is the final price? | 80 or 60 |
+| 6 | A swimmer does 20 laps in a 25-meter pool. How far did they swim? | 500 or 1000 |
+| 7 | A fence surrounds a yard that is 30 feet by 40 feet. There is a 4-foot gate. How many feet of fencing are needed? | 136 or 140 |
+| 8 | In 2024, a company with 500 employees and $2 million in revenue bought 30 computers at $800 each. How much did the computers cost? | 24000 |
+| 9 | Tom is 42 years old, 6 feet tall, and weighs 185 pounds. He drives 25 miles to work at 50 mph. How long is his commute in minutes? | 30 |
+| 10 | A bakery sells 3 types of bread. Sourdough costs $6, rye costs $5, and wheat costs an unknown amount. A customer buys 2 sourdough and 1 rye. They also grab a coffee for $3. How much do the bread and coffee cost? | 20 |
 
 ---
 
-### Tier 10 — Adversarial and Real-World Inputs (10 problems)
-
-These problems simulate real user input: informal phrasing, typos, approximate language, redundant numbers, multi-sentence clutter, and scenarios requiring non-obvious tool combinations. The agent must extract the actual math question from noisy human-like input.
+### Tier 10 — Adversarial and Real-World Inputs
 
 #### Worked Example
 
@@ -415,15 +411,20 @@ Key skill: parsing real-world messy input into a clean computation.
 
 #### All Tier 10 Problems
 
-| # | Problem | Answer | Category | Notes |
-|---|---------|--------|----------|-------|
-| 1 | ok so i bought like 4 boxes of granola bars, 12 in each, gave 7 away, how many left | 41 | Messy phrasing | No punctuation, filler words |
-| 2 | so my friend owes me 45 bucks and he paid back 20 yesterday and then today he gave me another 10... how much does he still owe | 15 | Messy phrasing | Conversational, ellipsis |
-| 3 | I drove about 210 miles, my car gets roughly 30 miles per gallon, gas was around $3.40 a gallon. About how much did I spend on gas? | 23.8 | Approximate language | "about", "roughly", "around" are noise |
-| 4 | There were approximately 1200 people at the concert. About a third left early. Roughly how many stayed? | 800 | Approximate language | Hedging language, compute with stated numbers |
-| 5 | I went to the store at 3pm on a Tuesday. The store is at 425 Oak Street and has been open since 1987. I bought 6 cans of soup at $2.50 each and paid with a $20 bill. How much change did I get? | 5 | Redundant numbers + clutter | Time, address, year are all distractors |
-| 6 | My daughter is in 4th grade at Lincoln Elementary, school #37 in the district. Her class has 28 kids. They need 3 folders each for a project. Folders come in packs of 10. How many packs do they need? | 9 | Redundant numbers + clutter | Grade, school number are distractors; requires ceiling division |
-| 7 | A recipe uses 500 grams of flour for 8 servings. I'm making 3 servings. How many grams of flour do I need? | 187.5 | Tool confusion | Scaling calculation, might tempt unit converter |
-| 8 | My car's tank holds 15 gallons and I filled it up at $3.80 per gallon. My friend in Canada paid 1.60 dollars per liter for 55 liters. How much more did my friend pay than me? | 31 | Tool confusion | Two separate cost calculations, then comparison |
-| 9 | Last summer we drove from Denver (elevation 5280 ft) to a campsite. The drive was 180 miles and took 3 hours. We used 6 gallons of gas. What was our average speed in mph? | 60 | Vague units + clutter | Elevation and gas usage are distractors |
-| 10 | ok so the bill was like $86 and there were 4 of us. we decided to tip 20 percent on the whole bill. how much does each person owe including tip | 25.8 | Hybrid: messy + multi-step | Informal phrasing with percentage + division |
+| # | Problem | Answer |
+|---|---------|--------|
+| 1 | ok so i bought like 4 boxes of granola bars, 12 in each, gave 7 away, how many left | 41 |
+| 2 | so my friend owes me 45 bucks and he paid back 20 yesterday and then today he gave me another 10... how much does he still owe | 15 |
+| 3 | I drove about 210 miles, my car gets roughly 30 miles per gallon, gas was around $3.40 a gallon. About how much did I spend on gas? | 23.8 |
+| 4 | There were approximately 1200 people at the concert. About a third left early. Roughly how many stayed? | 800 |
+| 5 | I went to the store at 3pm on a Tuesday. The store is at 425 Oak Street and has been open since 1987. I bought 6 cans of soup at $2.50 each and paid with a $20 bill. How much change did I get? | 5 |
+| 6 | My daughter is in 4th grade at Lincoln Elementary, school #37 in the district. Her class has 28 kids. They need 3 folders each for a project. Folders come in packs of 10. How many packs do they need? | 9 |
+| 7 | A recipe uses 500 grams of flour for 8 servings. I'm making 3 servings. How many grams of flour do I need? | 187.5 |
+| 8 | My car's tank holds 15 gallons and I filled it up at $3.80 per gallon. My friend in Canada paid 1.60 dollars per liter for 55 liters. How much more did my friend pay than me? | 31 |
+| 9 | Last summer we drove from Denver (elevation 5280 ft) to a campsite. The drive was 180 miles and took 3 hours. We used 6 gallons of gas. What was our average speed in mph? | 60 |
+| 10 | ok so the bill was like $86 and there were 4 of us. we decided to tip 20 percent on the whole bill. how much does each person owe including tip | 25.8 |
+| 11 | my boss said id get a raise of 12 percent starting next month. i make 4250 a month rn before taxes. taxes take 28%. whats my monthly take-home after the raise | 3427.2 |
+| 12 | We're planning a party for 45 people. The venue is at 1820 Pine Ave, capacity 200. Each table seats 6. We need 2 pitchers of water per table, each pitcher costs $4. Also renting the room for $150. How much is the total cost for pitchers and the room? | 214 |
+| 13 | flight was delayed 2.5 hrs so we left at 3:45pm instead of 1:15pm. flight time is 4 hrs 20 min, then a 55 min layover, then a 2 hr 10 min connection. how many total hours of travel from the delayed departure to final arrival? just the flying and layover time not the delay | 7.42 |
+| 14 | i bought stuff at 3 different stores. store A: 2 shirts at $24.99 each. store B: jeans for $45 and socks 3-pack for $8.50. store C: shoes marked $120 but 25% off. i also returned a $15 item at store A. what did i spend total? | 178.48 |
+| 15 | so theres this recipe right, calls for 2 and a half cups of rice and 1 and three quarter cups of lentils for 6 people. im cooking for 15 people. how many total cups of rice and lentils combined? | 10.62 |

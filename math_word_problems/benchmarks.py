@@ -7,12 +7,22 @@ Benchmark runners for all three phases.
 from __future__ import annotations
 
 import time
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from typing import Any, Dict, List
 
+def _retry(fn, *args, max_retries: int = 5, **kwargs):
+    """Retry wrapper for rate-limited API calls."""
+    for attempt in range(max_retries):
+        try:
+            return fn(*args, **kwargs)
+        except Exception as e:
+            if ("rate_limit" in str(e).lower() or "429" in str(e)) and attempt < max_retries - 1:
+                time.sleep(3 * (attempt + 1))
+                continue
+            raise
+
 from .problems import (
-    PHASE1_PROBLEMS, PHASE2_PROBLEMS, PHASE3_PROBLEMS,
-    PHASE3_SOLVABLE, PHASE3_UNSOLVABLE, PHASE3_AMBIGUOUS,
-    PHASE3_ADVERSARIAL, Problem,
+    PHASE1_PROBLEMS, PHASE2_PROBLEMS, PHASE3_PROBLEMS, Problem,
 )
 from .solver import solve_problem
 
@@ -109,71 +119,61 @@ def run_llm_benchmark(
 
     print(f"=== LLM Benchmark: {label} ===\n")
 
-    if phase in (1, 2):
-        by_tier: Dict[int, List[Problem]] = {}
-        for p in problems:
-            by_tier.setdefault(p.tier, []).append(p)
+    by_tier: Dict[int, List[Problem]] = {}
+    for p in problems:
+        by_tier.setdefault(p.tier, []).append(p)
 
-        print("| Tier | Problems | Correct | Accuracy | Avg Tool Calls | Avg Tokens In | Avg Tokens Out |")
-        print("|------|----------|---------|----------|----------------|---------------|----------------|")
+    print("| Tier | Problems | Correct | Accuracy | Avg Tool Calls | Avg Tokens In | Avg Tokens Out | Avg Cost   |")
+    print("|------|----------|---------|----------|----------------|---------------|----------------|------------|")
 
-        total_correct = total_problems = 0
-        for t in sorted(by_tier):
-            probs = by_tier[t]
-            correct = tc_sum = ti_sum = to_sum = 0
-            for prob in probs:
-                state = solve_problem_llm(prob.problem, phase=phase, model_name=model_name)
-                if state["status"] in ("solved", "correctly_rejected"):
-                    correct += 1
-                tc_sum += state.get("tool_calls", 0)
-                ti_sum += state.get("tokens_in", 0)
-                to_sum += state.get("tokens_out", 0)
-            n = len(probs)
-            total_correct += correct
-            total_problems += n
-            acc = correct / n * 100 if n else 0
-            print(
-                f"| {t:<4} | {n:<8} | {correct:<7} | {acc:>7.0f}% |"
-                f" {tc_sum/n:>14.1f} | {ti_sum/n:>13.0f} | {to_sum/n:>14.0f} |"
-            )
-        if len(by_tier) > 1:
-            acc = total_correct / total_problems * 100 if total_problems else 0
-            print(f"| ALL  | {total_problems:<8} | {total_correct:<7} | {acc:>7.0f}% |")
-    else:
-        by_tier: Dict[int, List[Problem]] = {}
-        for p in problems:
-            by_tier.setdefault(p.tier, []).append(p)
+    def _solve_one(prob: Problem) -> Dict[str, Any]:
+        return _retry(solve_problem_llm, prob.problem, phase=phase, model_name=model_name)
 
-        print("| Tier | Problems | Correct | Accuracy | Avg Tool Calls | Avg Tokens In | Avg Tokens Out |")
-        print("|------|----------|---------|----------|----------------|---------------|----------------|")
+    # Solve problems in parallel (2 workers to respect 50 RPM rate limit)
+    results_by_tier: Dict[int, List[Dict[str, Any]]] = {t: [] for t in by_tier}
+    all_problems = [(prob.tier, prob, idx) for idx, prob in enumerate(problems)]
 
-        total_correct = total_problems = 0
-        for t in sorted(by_tier):
-            probs = by_tier[t]
-            correct = tc_sum = ti_sum = to_sum = 0
-            for prob in probs:
-                state = solve_problem_llm(prob.problem, phase=3, model_name=model_name)
-                if state["status"] in ("solved", "correctly_rejected"):
-                    correct += 1
-                else:
-                    label = "HALLUCINATION" if prob.tier == 8 else "MISS"
-                    print(
-                        f"  {label}: {prob.problem[:60]}... "
-                        f"(got {state['status']}, answer={state.get('answer_numeric')})"
-                    )
-                tc_sum += state.get("tool_calls", 0)
-                ti_sum += state.get("tokens_in", 0)
-                to_sum += state.get("tokens_out", 0)
-            n = len(probs)
-            total_correct += correct
-            total_problems += n
-            acc = correct / n * 100 if n else 0
-            print(
-                f"| {t:<4} | {n:<8} | {correct:<7} | {acc:>7.0f}% |"
-                f" {tc_sum/n:>14.1f} | {ti_sum/n:>13.0f} | {to_sum/n:>14.0f} |"
-            )
-        if len(by_tier) > 1:
-            acc = total_correct / total_problems * 100 if total_problems else 0
-            print(f"| ALL  | {total_problems:<8} | {total_correct:<7} | {acc:>7.0f}% |")
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        futures = {pool.submit(_solve_one, prob): (tier, prob) for tier, prob, _ in all_problems}
+        for future in as_completed(futures):
+            tier, prob = futures[future]
+            results_by_tier[tier].append((prob, future.result()))
 
-        print(f"\nOverall Phase 3 score: {total_correct}/{total_problems}")
+    total_correct = total_problems = 0
+    total_cost = 0.0
+    for t in sorted(by_tier):
+        tier_results = results_by_tier[t]
+        correct = tc_sum = ti_sum = to_sum = 0
+        cost_sum = 0.0
+        for prob, state in tier_results:
+            if state["status"] in ("solved", "correctly_rejected"):
+                correct += 1
+            elif phase == 3:
+                err_label = "HALLUCINATION" if prob.tier == 8 else "MISS"
+                print(
+                    f"  {err_label}: {prob.problem[:60]}... "
+                    f"(got {state['status']}, answer={state.get('answer_numeric')})"
+                )
+            tc_sum += state.get("tool_calls", 0)
+            ti_sum += state.get("tokens_in", 0)
+            to_sum += state.get("tokens_out", 0)
+            cost_sum += state.get("cost", 0.0)
+        n = len(tier_results)
+        total_correct += correct
+        total_problems += n
+        total_cost += cost_sum
+        acc = correct / n * 100 if n else 0
+        print(
+            f"| {t:<4} | {n:<8} | {correct:<7} | {acc:>7.0f}% |"
+            f" {tc_sum/n:>14.1f} | {ti_sum/n:>13.0f} | {to_sum/n:>14.0f} |"
+            f" ${cost_sum/n:>8.4f} |"
+        )
+    if len(by_tier) > 1:
+        acc = total_correct / total_problems * 100 if total_problems else 0
+        print(
+            f"| ALL  | {total_problems:<8} | {total_correct:<7} | {acc:>7.0f}% |"
+            f"                |               |                |"
+            f" ${total_cost:>8.4f} |"
+        )
+
+    print(f"\nScore: {total_correct}/{total_problems} — Total cost: ${total_cost:.4f}")

@@ -422,6 +422,16 @@ def solve_with_agent(
     if status == "unsolvable" and expected is not None and math.isnan(expected):
         status = "correctly_rejected"
 
+    tokens_in = final_state.get("tokens_in", 0)
+    tokens_out = final_state.get("tokens_out", 0)
+
+    # Cost estimate per model (USD per million tokens)
+    _COST_TABLE = {
+        "claude-haiku-4-5-20251001": (1.00, 5.00),
+    }
+    in_rate, out_rate = _COST_TABLE.get(model_name, (1.00, 5.00))
+    cost = (tokens_in * in_rate + tokens_out * out_rate) / 1_000_000
+
     result = {
         "problem": problem_text,
         "steps": steps,
@@ -430,9 +440,9 @@ def solve_with_agent(
         "expected_answer": expected,
         "status": status,
         "tool_calls": final_state.get("tool_calls_count", 0),
-        "tokens_in": final_state.get("tokens_in", 0),
-        "tokens_out": final_state.get("tokens_out", 0),
-        "cost": 0.0,
+        "tokens_in": tokens_in,
+        "tokens_out": tokens_out,
+        "cost": cost,
     }
 
     if verbose:

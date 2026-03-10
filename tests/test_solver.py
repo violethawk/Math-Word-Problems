@@ -49,8 +49,8 @@ def test_phase2_has_30_problems():
     assert len(PHASE2_PROBLEMS) == 30
 
 
-def test_phase3_has_50_problems():
-    assert len(PHASE3_PROBLEMS) == 50
+def test_phase3_has_55_problems():
+    assert len(PHASE3_PROBLEMS) == 55
 
 
 def test_phase3_unsolvable_has_nan_answers():

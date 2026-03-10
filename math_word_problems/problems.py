@@ -930,6 +930,54 @@ PHASE3_ADVERSARIAL: List[Problem] = [
         expected_answer=(86 * 1.20) / 4,  # 25.8
         tier=10,
     ),
+
+    # --- Harder adversarial problems ---
+    Problem(
+        problem=(
+            "my boss said id get a raise of 12 percent starting next month. "
+            "i make 4250 a month rn before taxes. taxes take 28%. "
+            "whats my monthly take-home after the raise"
+        ),
+        expected_answer=4250 * 1.12 * (1 - 0.28),  # 3427.2
+        tier=10,
+    ),
+    Problem(
+        problem=(
+            "We're planning a party for 45 people. The venue is at 1820 Pine Ave, capacity 200. "
+            "Each table seats 6. We need 2 pitchers of water per table, each pitcher costs $4. "
+            "Also renting the room for $150. How much is the total cost for pitchers and the room?"
+        ),
+        expected_answer=8 * 2 * 4 + 150,  # ceil(45/6)=8 tables, 8*2*4=64, +150=214
+        tier=10,
+    ),
+    Problem(
+        problem=(
+            "flight was delayed 2.5 hrs so we left at 3:45pm instead of 1:15pm. "
+            "flight time is 4 hrs 20 min, then a 55 min layover, then a 2 hr 10 min connection. "
+            "how many total hours of travel from the delayed departure to final arrival? "
+            "just the flying and layover time not the delay"
+        ),
+        expected_answer=(4 + 20/60) + (55/60) + (2 + 10/60),  # 7.4167 hours
+        tier=10,
+    ),
+    Problem(
+        problem=(
+            "i bought stuff at 3 different stores. store A: 2 shirts at $24.99 each. "
+            "store B: jeans for $45 and socks 3-pack for $8.50. store C: shoes marked $120 "
+            "but 25% off. i also returned a $15 item at store A. what did i spend total?"
+        ),
+        expected_answer=(2 * 24.99 - 15) + (45 + 8.50) + (120 * 0.75),  # 178.48
+        tier=10,
+    ),
+    Problem(
+        problem=(
+            "so theres this recipe right, calls for 2 and a half cups of rice "
+            "and 1 and three quarter cups of lentils for 6 people. "
+            "im cooking for 15 people. how many total cups of rice and lentils combined?"
+        ),
+        expected_answer=(2.5 + 1.75) * (15 / 6),  # 10.625
+        tier=10,
+    ),
 ]
 
 PHASE3_PROBLEMS: List[Problem] = (
