@@ -72,7 +72,7 @@ Correct: + (expected: 29.0)
 
 ## The Full Problem Set
 
-All 110 questions and answers are documented in **[QUESTIONS.md](QUESTIONS.md)** — every problem, its expected answer, and a fully worked example for each tier showing the complete think-act-observe trace.
+All 130 questions and answers are documented in **[QUESTIONS.md](QUESTIONS.md)** — every problem, its expected answer, and a fully worked example for each tier showing the complete think-act-observe trace.
 
 ---
 
@@ -113,6 +113,22 @@ Also: problems with trick questions, irrelevant information included as distract
 **Key concepts:** Knowing when you can't solve something, asking clarifying questions, filtering irrelevant information, reasoning vs. computing.
 
 **Benchmark:** 20 solvable problems mixed with 10 unsolvable ones. Measure: accuracy on solvable, correct rejection rate on unsolvable, hallucination rate.
+
+### Robustness Extension — Tiers 9 & 10
+
+Tiers 1–8 teach the canonical single-agent loop. Tiers 9–10 test robustness under ambiguity, partial information, and messy real-world phrasing.
+
+**Tier 9 — Advanced Reasoning Under Ambiguity (10 problems)**
+
+Problems where the agent must solve the solvable part of a partially-specified problem, choose between competing interpretations ("does a lap mean one length or out-and-back?"), state assumptions, and resist irrelevant numbers.
+
+**Tier 10 — Adversarial and Real-World Inputs (10 problems)**
+
+Real human input: "ok so i bought like 4 boxes of granola bars, 12 in each, gave 7 away, how many left." Approximate language ("about 210 miles", "roughly 30 mpg"), redundant numbers (street addresses, years, elevations), multi-sentence clutter, and scenarios requiring non-obvious tool combinations.
+
+**Key concepts:** Partial solvability, assumption-stating, interpretation selection, noise tolerance, robustness.
+
+**Benchmark:** 20 problems across tiers 9-10. Measure: accuracy under ambiguity, correct handling of messy inputs.
 
 ---
 
@@ -254,10 +270,10 @@ def date_calculator(operation: str, date: str, days: int = 0) -> str:
 | Tier | Problems | Correct | Accuracy | Avg Tool Calls | Avg Tokens In | Avg Tokens Out |
 |------|----------|---------|----------|----------------|---------------|----------------|
 | 1    | 10       | 10      |     100% |            1.0 |          1654 |            134 |
-| 2    | 10       | 10      |     100% |            2.0 |          2382 |            264 |
-| 3    | 10       | 10      |     100% |            3.0 |          2741 |            371 |
-| 4    | 10       | 10      |     100% |            3.7 |          4544 |            470 |
-| 5    | 10       | 10      |     100% |            5.1 |          6370 |            634 |
+| 2    | 10       | 10      |     100% |            2.0 |          2292 |            268 |
+| 3    | 10       | 10      |     100% |            3.0 |          2844 |            365 |
+| 4    | 10       | 10      |     100% |            3.6 |          4166 |            460 |
+| 5    | 10       | 10      |     100% |            5.1 |          6361 |            632 |
 | ALL  | 50       | 50      |     100% |                |               |                |
 ```
 
@@ -268,21 +284,25 @@ Perfect accuracy across all tiers. Token usage scales linearly with problem comp
 ```
 | Tier | Problems | Correct | Accuracy | Avg Tool Calls | Avg Tokens In | Avg Tokens Out |
 |------|----------|---------|----------|----------------|---------------|----------------|
-| 6    | 30       | 30      |     100% |            2.7 |          5402 |            381 |
+| 6    | 30       | 30      |     100% |            2.7 |          5280 |            375 |
 ```
 
 The agent correctly selects between calculator, unit converter, percentage calculator, and date calculator across all 30 problems.
 
-#### Phase 3 — Incomplete Information
+#### Phase 3 — Incomplete Information & Robustness
 
 ```
-Solvable problems:     20/20 (100%)
-Unsolvable problems:   10/10 correctly rejected (100%)
-Hallucination rate:    0/10 (0%)
-Overall:               30/30 (100%)
+Solvable problems (Tier 7):          20/20 (100%)
+Unsolvable problems (Tier 8):        10/10 correctly rejected (100%)
+Hallucination rate:                   0/10 (0%)
+Ambiguous problems (Tier 9):         10/10 (100%)
+Adversarial / real-world (Tier 10):  10/10 (100%)
+Overall:                             50/50 (100%)
 ```
 
-The agent correctly identified all 10 unsolvable problems with zero hallucinations, and solved all 20 solvable problems including those with distractor information.
+The agent correctly identified all 10 unsolvable problems with zero hallucinations, solved all 20 solvable problems including those with distractor information, handled all ambiguous and partially-solvable problems, and parsed all messy real-world inputs correctly.
+
+#### Overall: 130/130 (100%)
 
 #### The Meta-Benchmark
 
@@ -308,7 +328,7 @@ math_word_problems/        Python package
   agent.py                 LLM-powered solver: LangGraph state machine, Claude tool loop
   benchmarks.py            Benchmark runners for predefined and LLM modes
   operations.py            Predefined operation plans for Phase 1 problems
-  problems.py              110 problems across 3 phases and 8 tiers
+  problems.py              130 problems across 3 phases and 10 tiers
   solver.py                Predefined solver and mock mode
   tools.py                 Calculator, unit converter, percentage, date tools
 tests/
@@ -351,7 +371,8 @@ python -m pytest tests/ -v
 3. **Chain-of-thought reasoning** — how agents decompose complex tasks into steps
 4. **Tool selection** — how agents decide which tool to use (Phase 2)
 5. **Knowing what you don't know** — how agents handle missing information (Phase 3)
-6. **When not to use an agent** — the meta-benchmark proves a Python script beats the agent on every dimension for this task
+6. **Reasoning under ambiguity** — how agents handle partial information, competing interpretations, and messy inputs (Tiers 9-10)
+7. **When not to use an agent** — the meta-benchmark proves a Python script beats the agent on every dimension for this task
 
 ---
 
