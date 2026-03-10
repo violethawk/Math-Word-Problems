@@ -41,6 +41,7 @@ class Problem:
     problem: str
     expected_answer: float
     tier: int
+    accepted_answers: tuple[float, ...] = ()  # additional valid answers for ambiguous problems
 
 
 # Tier 1 — Single operation problems (10 problems)
@@ -720,6 +721,111 @@ PHASE3_UNSOLVABLE: List[Problem] = [
 ]
 
 PHASE3_PROBLEMS: List[Problem] = PHASE3_SOLVABLE + PHASE3_UNSOLVABLE
+
+
+# ---------------------------------------------------------------------------
+# Tier 9 — Ambiguous, Partially Solvable, and Clarification-Needed (10 problems)
+# The agent must: solve what is solvable, state assumptions, handle competing
+# interpretations, resist irrelevant numbers, or request clarification.
+# Problems have a primary expected_answer and optional accepted_answers for
+# cases where multiple interpretations are valid.
+# ---------------------------------------------------------------------------
+
+PHASE3_AMBIGUOUS: List[Problem] = [
+    # --- Partial solvability (solvable part has a definite answer) ---
+    Problem(
+        problem=(
+            "A train leaves Chicago at 60 mph. Another train leaves New York at an unknown speed. "
+            "How far has the Chicago train traveled after 3 hours?"
+        ),
+        expected_answer=60 * 3,  # 180
+        tier=9,
+    ),
+    Problem(
+        problem=(
+            "A store sells notebooks for $4 each and pens for an unknown price. "
+            "You buy 5 notebooks and 3 pens. How much do the notebooks cost?"
+        ),
+        expected_answer=5 * 4,  # 20
+        tier=9,
+    ),
+    Problem(
+        problem=(
+            "A rectangular room is 12 feet long. The width is unknown. "
+            "A hallway connected to the room is 8 feet long and 4 feet wide. "
+            "What is the area of the hallway?"
+        ),
+        expected_answer=8 * 4,  # 32
+        tier=9,
+    ),
+
+    # --- Clarification needed / default interpretation ---
+    Problem(
+        problem=(
+            "A worker earns $20 per hour and worked from 9 AM to 5 PM with a 1-hour lunch break. "
+            "How much did they earn?"
+        ),
+        expected_answer=7 * 20,  # 140 (8 hours minus 1 hour break)
+        tier=9,
+    ),
+    Problem(
+        problem=(
+            "A store advertises '50% off, then take an additional 20% off.' "
+            "A jacket originally costs $200. What is the final price?"
+        ),
+        expected_answer=200 * 0.50 * 0.80,  # 80 (sequential discounts)
+        accepted_answers=(200 * (1 - 0.70),),  # 60 (combined 70% off interpretation)
+        tier=9,
+    ),
+
+    # --- Competing interpretations (multiple valid answers) ---
+    Problem(
+        problem="A swimmer does 20 laps in a 25-meter pool. How far did they swim?",
+        expected_answer=20 * 25,  # 500 (lap = one length)
+        accepted_answers=(20 * 50,),  # 1000 (lap = out-and-back)
+        tier=9,
+    ),
+    Problem(
+        problem=(
+            "A fence surrounds a yard that is 30 feet by 40 feet. "
+            "There is a 4-foot gate. How many feet of fencing are needed?"
+        ),
+        expected_answer=(30 + 40) * 2 - 4,  # 136 (subtract gate)
+        accepted_answers=((30 + 40) * 2,),  # 140 (gate is part of fence)
+        tier=9,
+    ),
+
+    # --- Resist irrelevant numbers ---
+    Problem(
+        problem=(
+            "In 2024, a company with 500 employees and $2 million in revenue "
+            "bought 30 computers at $800 each. How much did the computers cost?"
+        ),
+        expected_answer=30 * 800,  # 24000
+        tier=9,
+    ),
+    Problem(
+        problem=(
+            "Tom is 42 years old, 6 feet tall, and weighs 185 pounds. "
+            "He drives 25 miles to work at 50 mph. How long is his commute in minutes?"
+        ),
+        expected_answer=25 / 50 * 60,  # 30
+        tier=9,
+    ),
+
+    # --- Hybrid: partial solve + irrelevant numbers ---
+    Problem(
+        problem=(
+            "A bakery sells 3 types of bread. Sourdough costs $6, rye costs $5, "
+            "and wheat costs an unknown amount. A customer buys 2 sourdough and 1 rye. "
+            "They also grab a coffee for $3. How much do the bread and coffee cost?"
+        ),
+        expected_answer=2 * 6 + 5 + 3,  # 20 (only known bread + coffee)
+        tier=9,
+    ),
+]
+
+PHASE3_PROBLEMS: List[Problem] = PHASE3_SOLVABLE + PHASE3_UNSOLVABLE + PHASE3_AMBIGUOUS
 
 
 # Combine all problems into a single list

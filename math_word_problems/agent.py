@@ -175,11 +175,15 @@ You are a math word problem solver with access to multiple tools:
 CRITICAL RULES:
 1. You MUST use tools for ALL computations. Never compute numbers in your head.
 2. Before solving, carefully check if the problem provides enough information.
-3. If information is MISSING and the problem CANNOT be solved, respond with:
+3. If information is MISSING and the problem CANNOT be solved AT ALL, respond with:
    "UNSOLVABLE: <explanation of what information is missing>"
 4. Do NOT guess or assume missing values. Do NOT hallucinate an answer.
 5. If the problem IS solvable, solve it step by step and state: "FINAL ANSWER: <number>"
 6. Ignore irrelevant/distractor information that isn't needed for the solution.
+7. If a problem is PARTIALLY solvable, solve the part you can and give a numeric answer.
+   Note what information is missing but still provide "FINAL ANSWER: <number>" for the solvable part.
+8. If a problem has AMBIGUOUS interpretation, state your assumption clearly,
+   then solve using that interpretation and provide "FINAL ANSWER: <number>".
 """
 
 
@@ -394,10 +398,21 @@ def solve_with_agent(
     if problem_text in PROBLEM_BY_TEXT:
         expected = PROBLEM_BY_TEXT[problem_text].expected_answer
 
+    # Look up accepted_answers for ambiguous problems
+    prob_obj = PROBLEM_BY_TEXT.get(problem_text)
+    accepted_answers = prob_obj.accepted_answers if prob_obj else ()
+
     if status == "solved" and expected is not None and numeric_answer is not None:
         if not math.isnan(expected):
-            if abs(numeric_answer - expected) > max(0.01, abs(expected) * 0.01):
-                status = "wrong"
+            tol = max(0.01, abs(expected) * 0.01)
+            if abs(numeric_answer - expected) > tol:
+                # Check accepted alternative answers for ambiguous problems
+                matched_alt = any(
+                    abs(numeric_answer - alt) <= max(0.01, abs(alt) * 0.01)
+                    for alt in accepted_answers
+                )
+                if not matched_alt:
+                    status = "wrong"
     elif status == "unsolvable" and expected is not None:
         if not math.isnan(expected):
             status = "wrong"

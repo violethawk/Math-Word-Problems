@@ -11,7 +11,7 @@ from typing import Any, Dict, List
 
 from .problems import (
     PHASE1_PROBLEMS, PHASE2_PROBLEMS, PHASE3_PROBLEMS,
-    PHASE3_SOLVABLE, PHASE3_UNSOLVABLE, Problem,
+    PHASE3_SOLVABLE, PHASE3_UNSOLVABLE, PHASE3_AMBIGUOUS, Problem,
 )
 from .solver import solve_problem
 
@@ -161,5 +161,19 @@ def run_llm_benchmark(
         print(f"\nCorrect rejection rate: {correct_rejected}/{len(PHASE3_UNSOLVABLE)}")
         print(f"Hallucination rate: {hallucinated}/{len(PHASE3_UNSOLVABLE)}")
 
-        total = len(PHASE3_SOLVABLE) + len(PHASE3_UNSOLVABLE)
-        print(f"\nOverall Phase 3 score: {correct_solved + correct_rejected}/{total}")
+        print("\n--- Ambiguous / Partially Solvable Problems (Tier 9) ---")
+        correct_ambiguous = 0
+        for prob in PHASE3_AMBIGUOUS:
+            state = solve_problem_llm(prob.problem, phase=3, model_name=model_name)
+            if state["status"] in ("solved", "correctly_rejected"):
+                correct_ambiguous += 1
+            else:
+                print(
+                    f"  MISS: {prob.problem[:60]}... "
+                    f"(got {state['status']}, answer={state.get('answer_numeric')})"
+                )
+        print(f"\nAmbiguous accuracy: {correct_ambiguous}/{len(PHASE3_AMBIGUOUS)}")
+
+        total = len(PHASE3_SOLVABLE) + len(PHASE3_UNSOLVABLE) + len(PHASE3_AMBIGUOUS)
+        overall = correct_solved + correct_rejected + correct_ambiguous
+        print(f"\nOverall Phase 3 score: {overall}/{total}")

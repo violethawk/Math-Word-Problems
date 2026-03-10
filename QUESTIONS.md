@@ -350,3 +350,41 @@ Key skill: recognizing missing information instead of hallucinating an answer.
 | 8 | A tank is filling with water at some rate. After 2 hours it's half full. When will it be completely full? | Fill rate (can't assume constant) |
 | 9 | A plane flies east at 500 mph. Another plane flies west. When will they be 2000 miles apart? | Second plane's speed |
 | 10 | You earn a certain salary. After a 10% raise, you can afford a new car. How much does the car cost? | Salary amount |
+
+---
+
+### Tier 9 — Ambiguous, Partially Solvable, and Clarification-Needed (10 problems)
+
+These problems bridge clean curriculum and real agent behavior. The agent must handle partial solvability, competing interpretations, irrelevant numbers, and ambiguous wording. Problems with multiple valid interpretations accept any reasonable answer.
+
+#### Worked Example
+
+```
+Problem:  "A train leaves Chicago at 60 mph. Another train leaves New York at an
+           unknown speed. How far has the Chicago train traveled after 3 hours?"
+Answer:   180
+
+Step 1 -- THINK:   The second train's speed is unknown, but irrelevant to the question.
+                    I only need to compute distance for the Chicago train: 60 mph × 3 hours.
+Step 2 -- ACT:     calculator({operation: "multiply", a: 60, b: 3})
+Step 3 -- OBSERVE: 180.0
+Step 4 -- THINK:   The New York train's speed is missing, but the question only asks
+                    about the Chicago train. FINAL ANSWER: 180
+```
+
+Key skill: solving the solvable part and ignoring irrelevant missing information.
+
+#### All Tier 9 Problems
+
+| # | Problem | Answer | Category | Notes |
+|---|---------|--------|----------|-------|
+| 1 | A train leaves Chicago at 60 mph. Another train leaves New York at an unknown speed. How far has the Chicago train traveled after 3 hours? | 180 | Partial solvability | Ignore the unsolvable part |
+| 2 | A store sells notebooks for $4 each and pens for an unknown price. You buy 5 notebooks and 3 pens. How much do the notebooks cost? | 20 | Partial solvability | Answer what you can |
+| 3 | A rectangular room is 12 feet long. The width is unknown. A hallway connected to the room is 8 feet long and 4 feet wide. What is the area of the hallway? | 32 | Partial solvability | Room dimensions are a distractor |
+| 4 | A worker earns $20 per hour and worked from 9 AM to 5 PM with a 1-hour lunch break. How much did they earn? | 140 | Clarification needed | 8 hours − 1 break = 7 hours × $20 |
+| 5 | A store advertises "50% off, then take an additional 20% off." A jacket originally costs $200. What is the final price? | 80 or 60 | Competing interpretations | Sequential (80) vs combined (60) |
+| 6 | A swimmer does 20 laps in a 25-meter pool. How far did they swim? | 500 or 1000 | Competing interpretations | Lap = one length (500) or out-and-back (1000) |
+| 7 | A fence surrounds a yard that is 30 feet by 40 feet. There is a 4-foot gate. How many feet of fencing are needed? | 136 or 140 | Competing interpretations | Subtract gate (136) or not (140) |
+| 8 | In 2024, a company with 500 employees and $2 million in revenue bought 30 computers at $800 each. How much did the computers cost? | 24000 | Resist irrelevant numbers | Year, employees, and revenue are distractors |
+| 9 | Tom is 42 years old, 6 feet tall, and weighs 185 pounds. He drives 25 miles to work at 50 mph. How long is his commute in minutes? | 30 | Resist irrelevant numbers | Age, height, and weight are distractors |
+| 10 | A bakery sells 3 types of bread. Sourdough costs $6, rye costs $5, and wheat costs an unknown amount. A customer buys 2 sourdough and 1 rye. They also grab a coffee for $3. How much do the bread and coffee cost? | 20 | Hybrid: partial + distractors | Only known bread + coffee; wheat price is missing but not purchased |
