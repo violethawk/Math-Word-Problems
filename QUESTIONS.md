@@ -1,6 +1,6 @@
 # Complete Question & Answer Set
 
-110 problems across 3 phases and 8 difficulty tiers. Every problem, its expected answer, and the operation plan (where applicable).
+130 problems across 3 phases and 10 difficulty tiers. Every problem, its expected answer, and the operation plan (where applicable).
 
 For each tier, one full worked example is shown first, followed by the remaining problems.
 
