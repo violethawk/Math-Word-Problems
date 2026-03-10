@@ -163,35 +163,35 @@ Operation plan: `multiply(3, 250) → 750`, then `divide(750, 2) → 375`, then 
 #### Worked Example
 
 ```
-Problem:  "A bakery makes 12 dozen cookies. They sell 40% on Monday and 25% of the
+Problem:  "A bakery makes 15 dozen cookies. They sell 40% on Monday and 25% of the
            remainder on Tuesday. How many are left after Tuesday?"
-Answer:   64.8
+Answer:   81
 
-Step 1  -- THINK:   12 dozen = 12 x 12 cookies.
-Step 2  -- ACT:     calculator({operation: "multiply", a: 12, b: 12})
-Step 3  -- OBSERVE: 144.0
-Step 4  -- THINK:   They sell 40% on Monday. Find 40% of 144.
-Step 5  -- ACT:     calculator({operation: "multiply", a: 144, b: 0.40})
-Step 6  -- OBSERVE: 57.6
+Step 1  -- THINK:   15 dozen = 15 x 12 cookies.
+Step 2  -- ACT:     calculator({operation: "multiply", a: 15, b: 12})
+Step 3  -- OBSERVE: 180.0
+Step 4  -- THINK:   They sell 40% on Monday. Find 40% of 180.
+Step 5  -- ACT:     calculator({operation: "multiply", a: 180, b: 0.40})
+Step 6  -- OBSERVE: 72.0
 Step 7  -- THINK:   Subtract Monday's sales from total.
-Step 8  -- ACT:     calculator({operation: "subtract", a: 144, b: 57.6})
-Step 9  -- OBSERVE: 86.4
-Step 10 -- THINK:   Now 25% of the remainder (86.4) is sold on Tuesday.
-Step 11 -- ACT:     calculator({operation: "multiply", a: 86.4, b: 0.25})
-Step 12 -- OBSERVE: 21.6
+Step 8  -- ACT:     calculator({operation: "subtract", a: 180, b: 72})
+Step 9  -- OBSERVE: 108.0
+Step 10 -- THINK:   Now 25% of the remainder (108) is sold on Tuesday.
+Step 11 -- ACT:     calculator({operation: "multiply", a: 108, b: 0.25})
+Step 12 -- OBSERVE: 27.0
 Step 13 -- THINK:   Subtract Tuesday's sales.
-Step 14 -- ACT:     calculator({operation: "subtract", a: 86.4, b: 21.6})
-Step 15 -- OBSERVE: 64.8
-Step 16 -- THINK:   FINAL ANSWER: 64.8
+Step 14 -- ACT:     calculator({operation: "subtract", a: 108, b: 27})
+Step 15 -- OBSERVE: 81.0
+Step 16 -- THINK:   FINAL ANSWER: 81
 ```
 
-Operation plan: `multiply(12, 12) → 144`, then `multiply(144, 0.40) → 57.6`, then `subtract(144, 57.6) → 86.4`, then `multiply(86.4, 0.25) → 21.6`, then `subtract(86.4, 21.6) → 64.8`
+Operation plan: `multiply(15, 12) → 180`, then `multiply(180, 0.40) → 72`, then `subtract(180, 72) → 108`, then `multiply(108, 0.25) → 27`, then `subtract(108, 27) → 81`
 
 #### All Tier 5 Problems
 
 | # | Problem | Answer |
 |---|---------|--------|
-| 1 | A bakery makes 12 dozen cookies. They sell 40% on Monday and 25% of the remainder on Tuesday. How many are left after Tuesday? | 64.8 |
+| 1 | A bakery makes 15 dozen cookies. They sell 40% on Monday and 25% of the remainder on Tuesday. How many are left after Tuesday? | 81 |
 | 2 | A computer is discounted by 15%, then a coupon takes off $50, then a 8% sales tax is applied. The original price is $1000. What is the final price? | 864 |
 | 3 | A runner completes 10 km on Monday, 12 km on Tuesday, 8 km on Wednesday, and 3 km on Thursday. She then doubles the total distance and subtracts 5 km for rest days. What is her final training distance? | 61 |
 | 4 | A factory produces 100 widgets per day for 5 days, then 120 widgets per day for 3 days. They ship 400 widgets and then 100 widgets are returned. How many widgets remain? | 560 |

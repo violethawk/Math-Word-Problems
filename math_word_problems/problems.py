@@ -302,10 +302,10 @@ _TIER4: List[Problem] = [
 _TIER5: List[Problem] = [
     Problem(
         problem=(
-            "A bakery makes 12 dozen cookies. They sell 40% on Monday and 25% of the remainder on Tuesday. "
+            "A bakery makes 15 dozen cookies. They sell 40% on Monday and 25% of the remainder on Tuesday. "
             "How many are left after Tuesday?"
         ),
-        expected_answer=(12 * 12) * (1 - 0.40) * (1 - 0.25),
+        expected_answer=(15 * 12) * (1 - 0.40) * (1 - 0.25),
         tier=5,
     ),
     Problem(

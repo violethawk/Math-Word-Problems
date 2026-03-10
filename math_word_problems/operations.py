@@ -196,8 +196,8 @@ PROBLEM_OPERATIONS: Dict[str, List[Dict[str, Any]]] = {
         {"op": "add", "a": ("result", 0), "b": 5},
     ],
     # Tier 5
-    "A bakery makes 12 dozen cookies. They sell 40% on Monday and 25% of the remainder on Tuesday. How many are left after Tuesday?": [
-        {"op": "multiply", "a": 12, "b": 12},
+    "A bakery makes 15 dozen cookies. They sell 40% on Monday and 25% of the remainder on Tuesday. How many are left after Tuesday?": [
+        {"op": "multiply", "a": 15, "b": 12},
         {"op": "multiply", "a": ("result", 0), "b": 0.40},
         {"op": "subtract", "a": ("result", 0), "b": ("result", 1)},
         {"op": "multiply", "a": ("result", 2), "b": 0.25},
