@@ -70,6 +70,12 @@ Correct: + (expected: 29.0)
 
 ---
 
+## The Full Problem Set
+
+All 110 questions and answers are documented in **[QUESTIONS.md](QUESTIONS.md)** — every problem, its expected answer, and a fully worked example for each tier showing the complete think-act-observe trace.
+
+---
+
 ## The Three Phases
 
 ### Phase 1 — One Tool, Clear Problems
