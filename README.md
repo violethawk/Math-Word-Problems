@@ -307,16 +307,16 @@ Tier 8 (unsolvable) uses zero tool calls — the agent correctly rejects before 
 
 #### The Meta-Benchmark
 
-The predefined solver runs all 50 Phase 1 problems through scripted operation plans — no LLM needed:
+The LLM agent solves all 50 Phase 1 problems correctly — but so does a Python script with hardcoded operation plans:
 
 ```
 | Method          | Accuracy | Time      | Cost    |
 |-----------------|----------|-----------|---------|
-| Agent (Haiku)   | 50/50    | 168.2s    | ~$0.02  |
-| Python script   | 50/50    | 0.001s    | $0.00   |
+| Agent (Haiku)   | 50/50    | ~320s     | ~$0.02  |
+| Python script   | 50/50    | <0.001s   | $0.00   |
 ```
 
-The agent gets the same answers but is 168,000x slower and costs money. The point isn't that agents are good at arithmetic. The point is that you now understand how agents work — and you know when not to use one.
+The agent gets the same answers but is ~300,000x slower and costs money. The point isn't that agents are good at arithmetic. The point is that you now understand how agents work — and you know when not to use one.
 
 ---
 
