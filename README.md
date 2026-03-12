@@ -319,6 +319,8 @@ The LLM agent solves all 50 Phase 1 problems correctly — but so does a Python 
 
 The agent gets the same answers but is ~170,000x slower and costs money. The point isn't that agents are good at arithmetic. The point is that you now understand how agents work — and you know when not to use one.
 
+But that script only works because Phase 1 problems are unambiguous and finite — you can hardcode every operation plan. Try that with Tiers 6–10: the agent must choose between four tools without being told which one (Tier 6), ignore distractor information (Tier 7), recognize when a problem is *unsolvable* and refuse to answer (Tier 8), reason under genuine ambiguity (Tier 9), and parse messy real-world input like "ok so i bought like 4 boxes of granola bars" (Tier 10). No hardcoded script handles that. The meta-benchmark shows where agents are wasteful; Phases 2–3 show where they're necessary.
+
 ---
 
 ## Project Structure
@@ -374,7 +376,7 @@ python -m pytest tests/ -v
 4. **Tool selection** — how agents decide which tool to use (Phase 2)
 5. **Knowing what you don't know** — how agents handle missing information (Phase 3)
 6. **Reasoning under ambiguity** — how agents handle partial information, competing interpretations, and messy inputs (Tiers 9-10)
-7. **When not to use an agent** — the meta-benchmark proves a Python script beats the agent on every dimension for this task
+7. **When not to use an agent** — the meta-benchmark proves a Python script beats the agent on Phase 1, but Phases 2–3 show where deterministic scripts fall apart and agents earn their keep
 
 ---
 
